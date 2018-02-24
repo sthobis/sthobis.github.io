@@ -1,5 +1,5 @@
 import React from 'react'
-import projectThumbnail_1 from '../assets/projects-1.png'
+import projectThumbnail_1 from '../assets/projects-1.jpg'
 
 const IndexPage = () => (
   <div>
@@ -28,7 +28,8 @@ const IndexPage = () => (
               <span className="tags">React</span>
               <span className="tags">Next.js</span>
               <span className="tags">Fullstack Dev</span>
-              <p>Duajarimanis is a static wedding site generator.</p>
+              <p>Duajarimanis is a static wedding site generator with a built-in WYSIWYG editor.</p>
+              <p>It's a personal project where I worked as sole Developer & Designer.</p>
             </div>
           </div>
         </li>
