@@ -1,41 +1,30 @@
-@import url('https://fonts.googleapis.com/css?family=Caesar+Dressing|Palanquin+Dark');
+@import "_variable";
 
-@gap-horizontal: 20px;
-@gap-vertical: 2px;
-@time-anim: 2s;
-@blend-mode-1: normal;
-@blend-mode-2: normal;
-@blend-mode-3: normal;
-@blend-mode-4: normal;
-@blend-mode-5: normal;
-@blend-color-1: transparent;
-@blend-color-2: transparent;
-@blend-color-3: transparent;
-@blend-color-4: transparent;
-@blend-color-5: transparent;
+* {
+  box-sizing: border-box;
+}
 
 html {
   font-size: 10px;
 }
 
 body {
-  background-color: #111;
-  color: rgba(255, 255, 255, 0.9);
+  color: @colorPrimary;
   margin: 0;
-  font-family: 'Palanquin Dark', sans-serif;
-  font-size: 1.6rem;
-  font-weight: 400;
+  font-family: @fontPrimary;
+  font-size: 2rem;
+  font-weight: 300;
 }
 
 h1, h2, h3, h4, h5 {
-  font-weight: 400;
+  font-weight: 300;
 }
 
-* {
-  box-sizing: border-box;
+a {
+  text-decoration: none;
 }
 
-.bg {
+.the-glitch {
   position: fixed;
   top: 0;
   left: 0;
@@ -43,25 +32,21 @@ h1, h2, h3, h4, h5 {
   height: 100vh;
   overflow: hidden;
 
-  &::before {
-    content: '';
-    display: block;
-    padding-top: 62.5%;
-  }
-
   &::after {
     content: '';
     display: block;
     position: absolute;
+    z-index: 2;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: url(../assets/pattern.png) repeat;
+    background-color: fade(#232830, 94);
   }
 
-  .bg-glitch {
+  & > div {
     position: absolute;
+    z-index: 0;
     top: calc(-1 * @gap-vertical);
     left: calc(-1 * @gap-horizontal);
     width: calc(~"100% + 40px");
@@ -73,52 +58,33 @@ h1, h2, h3, h4, h5 {
     background-blend-mode: @blend-mode-1;
 
     &:nth-child(n+2) {
-      opacity: 0;
+      opacity: 1;
     }
 
     &:nth-child(2) {
       background-color: @blend-color-2;
       background-blend-mode: @blend-mode-2;
-    }
-
-    &:nth-child(3) {
-      background-color: @blend-color-3;
-      background-blend-mode: @blend-mode-3;
-    }
-
-    &:nth-child(4) {
-      background-color: @blend-color-4;
-      background-blend-mode: @blend-mode-4;
-    }
-
-    &:nth-child(5) {
-      background-color: @blend-color-5;
-      background-blend-mode: @blend-mode-5;
-    }
-  }
-
-  .bg-glitch {
-
-    &:nth-child(n+2)  {
-      opacity: 1;
-    }
-
-    &:nth-child(2) {
       transform: translate3d(@gap-horizontal,0,0);
       animation: glitch-anim-1-horizontal @time-anim infinite linear alternate;
     }
 
     &:nth-child(3) {
+      background-color: @blend-color-3;
+      background-blend-mode: @blend-mode-3;
       transform: translate3d(calc(-1 * @gap-horizontal),0,0);
       animation: glitch-anim-2-horizontal @time-anim infinite linear alternate;
     }
 
     &:nth-child(4) {
+      background-color: @blend-color-4;
+      background-blend-mode: @blend-mode-4;
       transform: translate3d(0, calc(-1 * @gap-vertical), 0) scale3d(-1,-1,1);
       animation: glitch-anim-3-horizontal @time-anim infinite linear alternate;
     }
 
     &:nth-child(5) {
+      background-color: @blend-color-5;
+      background-blend-mode: @blend-mode-5;
       animation: glitch-anim-flash 0.5s steps(1, end) infinite;
     }
   }
@@ -128,183 +94,44 @@ main {
   position: relative;
 }
 
-section {
-  width: 100%;
-  padding: 10vh 10vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.cover {
-  position: relative;
-  min-height: 100vh;
-
-  .cover-text {
-    width: 100%;
-    color: #fff;
-    font-size: 4rem;
-    font-family: 'Caesar Dressing', cursive;
-    text-align: center;
-
-    .red-pill {
-      padding: 0 10px;
-      background-color: rgba(255, 0, 0, 0.4);
-    }
-  }
-}
-
-.projects {
-  align-items: stretch;
-
-  h2 {
-    font-size: 4rem;
-    text-align: center;
-    margin-top: 0;
-  }
-
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-  }
-
-  .projects-item {
-    display: flex;
-    align-items: flex-start;
-
-    & + .projects-item {
-      margin-top: 50px;
-    }
-
-    .thumbnail {
-      display: flex;
-      align-items: flex-start;
-      width: 50%;
-      position: relative;
-
-      img {
-        width: 100%;
-      }
-
-      &:after {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(to bottom right, #d900ec, #00badb);
-        opacity: 0.15;
-      }
-    }
-
-    .projects-desc {
-      margin: 0 0 0 20px;
-
-      h3 {
-        font-size: 3rem;
-        line-height: 1;
-        margin: 0;
-      }
-
-      a {
-        display: block;
-        color: #fff;
-        margin: 0 0 10px 0;
-
-        &:visited {
-          color: #fff;
-        }
-      }
-
-      .tags {
-        padding: 0 5px;
-        font-size: 1.4rem;
-        background-color: rgba(255, 0, 0, 0.4);
-
-        & + .tags {
-          margin-left: 5px;
-        }
-      }
-
-      p {
-        margin: 10px 0;
-        line-height: 1.25;
-
-        &:first-of-type {
-          margin-top: 15px;
-        }
-
-        &:last-of-type {
-          margin-bottom: 15px;
-        }
-      }
-    }
-  }
-}
-
-.contact {
-
-  h2 {
-    font-size: 4rem;
-    margin: 0 0 30px;
-    line-height: 1;
-  }
-
-  a {
-    display: inline-block;
-    color: #fff;
-    text-align: center;
-    background-color: rgba(255, 0, 0, 0.4);
-    text-decoration: none;
-    padding: 0 10px;
-    margin: 0 0 10px;
-
-    &:visited {
-      color: #fff;
-    }
-
-    & + a {
-      margin-left: 10px;
-    }
-  }
-}
-
 .error-404 {
-  position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10rem;
 
   h1 {
     font-size: 4rem;
-    margin: 0 0 30px;
+    margin: 0;
     line-height: 1;
   }
 
   p {
     font-size: 3rem;
-    margin: 0;
+    margin: 0 0 3rem 0;
   }
 }
 
+nav.links {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  flex-wrap: wrap;
+  
+  a {
+    color: @colorSecondary;
+    margin: 0 5px;
+    font-size: 1.8rem;
 
-@media (max-width: 960px) {
+    &:first-child {
+      margin-left: 0;
+    }
 
-  .projects {
-
-    .projects-item {
-      flex-direction: column;
-
-      .thumbnail {
-        width: 100%;
-      }
-
-      .projects-desc {
-        margin: 20px 0 0;
-      }
+    &:last-child {
+      margin-right: 0;
     }
   }
 }
@@ -490,5 +317,12 @@ section {
   33%, 100% { 
     opacity: 0;
     transform: translate3d(0,0,0);
+  }
+}
+
+@media (max-width: 767px) {
+
+  html {
+    font-size: 5px;
   }
 }

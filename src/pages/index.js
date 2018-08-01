@@ -1,49 +1,14 @@
-import React from 'react'
-import projectThumbnail_1 from '../assets/projects-1.jpg'
+import React from 'react';
+import Nav from "../components/Nav";
+import "../styles/index.less";
 
 const IndexPage = () => (
-  <div>
-    <section className="cover">
-      <div className="cover-text">
-        <h1>Hi, my name is <span className="red-pill">Thobi</span></h1>
-        <p>I'm a <span className="red-pill">{`<Web/>`}</span> Developer</p>
-      </div>
-    </section>
-    <section className="projects">
-      <h2>Works</h2>
-      <ul>
-        <li>
-          <div className="projects-item">
-            <div className="thumbnail">
-              <img src={projectThumbnail_1} alt='Duajarimanis' />
-            </div>
-            <div className="projects-desc">
-              <h3>Duajarimanis</h3>
-              <a
-                href="https://duajarimanis.com"
-                target="_blank"
-                rel="noopener"
-              >https://duajarimanis.com</a>
-              <span className="tags">Express</span>
-              <span className="tags">React</span>
-              <span className="tags">Next.js</span>
-              <span className="tags">Fullstack Dev</span>
-              <p>Duajarimanis is a static wedding site generator with a built-in WYSIWYG editor.</p>
-              <p>It's a personal project where I worked as sole Developer & Designer.</p>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </section>
-    <section className="contact">
-      <h2>Got question? Contact me :</h2>
-      <div>
-        <a href="mailto:s.thobi.sinaga@gmail.com?Subject=Hello%20Thobi">
-          Email
-        </a>
-        <a href="https://twitter.com/iboht">Twitter</a>
-      </div>
-    </section>
+  <div className="cover">
+    <div className="text">
+      <h1>STEFANUS THOBI SINAGA</h1>
+      <p>WEB/MOBILE DEVELOPER</p>
+    </div>
+    <Nav />
   </div>
 )
 

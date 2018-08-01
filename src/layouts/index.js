@@ -1,17 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Helmet from 'react-helmet'
-
-import './index.less'
-import favicon from '../assets/icon.png'
+import PropTypes from 'prop-types';
+import React from 'react';
+import Helmet from 'react-helmet';
+import favicon from '../assets/icon.png';
+import '../styles/_global.less';
 
 const TemplateWrapper = ({ children }) => (
   <div>
     <Helmet
       title="Thobi Sinaga"
       meta={[
-        { name: 'description', content: 'Stefanus Thobi Sinaga - About Me' },
-        { name: 'keywords', content: 'thobi, sthobis, about, contact' },
+        { name: 'description', content: 'Stefanus Thobi Sinaga - Web/Mobile Developer' },
+        { name: 'keywords', content: 'stefanus, thobi, sinaga, sthobis, contact' },
       ]}
     >
       <link
@@ -20,16 +19,14 @@ const TemplateWrapper = ({ children }) => (
         href={favicon}
       />
     </Helmet>
-    <div className="bg">
-      <div className="bg-glitch" />
-      <div className="bg-glitch" />
-      <div className="bg-glitch" />
-      <div className="bg-glitch" />
-      <div className="bg-glitch" />
+    <div className="the-glitch">
+      <div/>
+      <div/>
+      <div/>
+      <div/>
+      <div/>
     </div>
-    <main>
-      {children()}
-    </main>
+    <main>{children()}</main>
   </div>
 )
 

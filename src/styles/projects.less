@@ -1,0 +1,62 @@
+@import "_variable";
+
+.projects {
+  padding: 10rem;
+
+  h1 {
+    font-size: 4rem;
+    margin: 0 0 3rem 0;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0 0 3rem 0;
+    padding: 0;
+    width: 100%;
+
+    li + li {
+      margin-top: 3rem;
+    }
+  }
+
+  .item {
+    display: flex;
+    align-items: flex-start;
+
+    .description {
+
+      h2 {
+        font-size: 2.8rem;
+        line-height: 1;
+        margin: 0 0 0.5rem 0;
+      }
+
+      a {
+        display: block;
+        font-size: 1.6rem;
+        color: @colorSecondary;
+        word-wrap: break-word;
+
+        &:last-of-type {
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      .tags {
+        padding: 2px 5px;
+        font-size: 1.4rem;
+        background-color: fade(@colorSecondary, 40%);
+        border-radius: 1px;
+
+        & + .tags {
+          margin-left: 5px;
+        }
+      }
+
+      p {
+        margin: 1.5rem 0;
+        line-height: 1.25;
+      }
+    }
+  }
+}
