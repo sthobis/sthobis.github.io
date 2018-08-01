@@ -10,7 +10,14 @@
     margin: 0 0 .5rem 0;
   }
 
-  *:nth-last-child(2) {
+  & > *:nth-last-child(2) {
     margin-bottom: 3rem;
+  }
+}
+
+@media (max-width: 767px) {
+
+  .about {
+    padding: 5rem;
   }
 }

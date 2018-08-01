@@ -322,7 +322,15 @@ nav.links {
 
 @media (max-width: 767px) {
 
-  html {
-    font-size: 5px;
+  nav.links {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 0;
+
+    a {
+      display: block;
+      margin: 0 0 .5rem 0;
+    }
   }
 }

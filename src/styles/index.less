@@ -2,7 +2,7 @@
 
 .cover {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,6 +21,18 @@
     p {
       font-size: 2.4rem;
       margin: 0;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+
+  .cover {
+    padding: 5rem;
+    align-items: stretch;
+
+    .text {
+      text-align: center;
     }
   }
 }
