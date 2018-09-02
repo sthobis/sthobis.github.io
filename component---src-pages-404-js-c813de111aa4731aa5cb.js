@@ -1,0 +1,2 @@
+webpackJsonp([0x9427c64ab85d],{195:function(e,t,l){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}t.__esModule=!0;var u=l(4),a=n(u),r=function(){return a.default.createElement("section",{className:"error-404"},a.default.createElement("h1",null,"Oops, wrong turn"),a.default.createElement("p",null,"You shall not pass!"))};t.default=r,e.exports=t.default}});
+//# sourceMappingURL=component---src-pages-404-js-c813de111aa4731aa5cb.js.map
