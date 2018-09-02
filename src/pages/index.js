@@ -1,14 +1,13 @@
 import React from 'react';
-import Nav from "../components/Nav";
 import "../styles/index.less";
 
+let today = new Date()
+
 const IndexPage = () => (
-  <div className="cover">
-    <div className="text">
-      <h1>STEFANUS THOBI SINAGA</h1>
-      <p>WEB/MOBILE DEVELOPER</p>
-    </div>
-    <Nav />
+  <div className="page-index">
+    <p>{today.getDate()}/{today.getMonth() + 1}/{today.getFullYear()}</p>
+    <h1>STEFANUS THOBI SINAGA</h1>
+    <h2>javascript web / mobile developer</h2>
   </div>
 )
 
