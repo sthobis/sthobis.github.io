@@ -71,6 +71,24 @@ nav {
     &:last-child {
       margin-right: 0;
     }
+
+    &.active {
+      color: @colorSecondary;
+    }
+  }
+}
+
+.animation {
+  transition: .7s;
+
+  &.animation-start {
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+
+  &.animation-finish {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -83,7 +101,6 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   a {
     font-size: 1.6rem;
     font-weight: 700;
@@ -96,6 +113,8 @@ nav {
     svg {
       width: 30px;
       height: 30px;
+      color: @colorPrimary;
+      transition: .3s;
     }
 
     &:first-child {
@@ -104,6 +123,13 @@ nav {
 
     &:last-child {
       margin: 5px 0 0 0;
+    }
+  
+    &:hover {
+      
+      svg {
+        fill: @colorSecondary;
+      }
     }
   }
 }
@@ -177,23 +203,24 @@ nav {
   }
 }
 
-.error-404 {
-  height: 100vh;
+.page-404 {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 10rem;
+  margin: 3rem 0;
 
   h1 {
     font-size: 4rem;
+    font-weight: 800;
     margin: 0;
     line-height: 1;
   }
 
   p {
     font-size: 3rem;
-    margin: 0 0 3rem 0;
+    font-weight: 700;
+    margin: 0;
   }
 }
 
