@@ -1,128 +1,199 @@
-import React from "react";
+import anime from "animejs";
+import React, { Component } from "react";
 import Header from "./Header";
 
-const shapes = {
-  "/":
-    "M 312.5,232.5 c 247,-110 597,-72 744,0 s 201,158 7,295 s -603,-113 -804,0 S 65.5,342.5 312.5,232.5 z",
-  "/about":
-    "M 312.5,232.5 c -128,-170 411,-315 744,0 s -338,54 7,295 s -696,173 -804,0 S 440.5,402.5 312.5,232.5 z",
-  "/projects":
-    "M 254.3,208.7 c 315.9,-239.3 324.1,-78.5 493.9,-85 s 586.1,-279.9 388.9,209.7 s -273,492.4 -415.4,272.5 S -61.6,448 254.3,208.7 z",
-  "/_error":
-    "M 312.5,232.5 c 247,-110 597,-72 744,0 s 201,158 7,295 s -603,-113 -804,0 S 65.5,342.5 312.5,232.5 z"
+const getShapes = pathname => {
+  switch (pathname) {
+    case "/":
+      return [
+        "M 312.5,232.5 c 247,-110 597,-72 744,0 s 201,158 7,295 s -603,-113 -804,0 S 65.5,342.5 312.5,232.5 z",
+        "M 312.5,232.5 c 273.5,-60.5 602.5,20.5 744,0 s 166.5,94.5 7,295 s -609.5,-29.5 -804,0 S 39,293 312.5,232.5 z"
+      ];
+    case "/projects":
+      return [
+        "M 312.5,232.5 c -128,-170 411,-315 744,0 s -338,54 7,295 s -696,173 -804,0 S 440.5,402.5 312.5,232.5 z",
+        "M 312.5,232.5 c -166.5,-232.5 581.5,-252.5 744,0 s -199.5,81.5 7,295 s -808.5,170.5 -804,0 S 479,465 312.5,232.5 z"
+      ];
+    default:
+      return [
+        "M 312.5,232.5 c 247,-110 597,-72 744,0 s 201,158 7,295 s -603,-113 -804,0 S 65.5,342.5 312.5,232.5 z",
+        "M 312.5,232.5 c 273.5,-60.5 602.5,20.5 744,0 s 166.5,94.5 7,295 s -609.5,-29.5 -804,0 S 39,293 312.5,232.5 z"
+      ];
+  }
 };
 
-const backgrounds = {
-  "/": "#363dc2",
-  "/about": "#8a2856",
-  "/projects": "rebeccapurple",
-  "/_error": "#363dc2"
+const getBackgroundColor = pathname => {
+  switch (pathname) {
+    case "/":
+      return "#363dc2";
+    case "/projects":
+      return "rebeccapurple";
+    case "/about":
+      return "#8a2856";
+    default:
+      return "#363dc2";
+  }
 };
 
-const Layout = ({ pathname, children }) => (
-  <>
-    <div className="background">
-      <svg width="1366" height="768" viewBox="0 0 1366 768">
-        <path d={shapes[pathname]} />
-      </svg>
-    </div>
-    <main className="content">
-      <Header pathname={pathname} />
-      <div className="source">
-        <a href="https://github.com/sthobis/sthobis.github.io/tree/dev">
-          view source
-        </a>
-      </div>
-      <div className="sns">
-        <a href="https://twitter.com/iBoht">twitter</a>
-        <a href="https://instagram.com/thobiisnaga">instagram</a>
-      </div>
-      {children}
-    </main>
-    <style jsx>{`
-      .background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        background-color: ${backgrounds[pathname]};
-        transition: 1s;
-      }
+class Layout extends Component {
+  state = {
+    transitionInlineStyle: {}
+  };
 
-      svg {
-        width: 100%;
-        height: 100%;
-        transform-origin: 50% 50%;
-        transform: scale(1.3);
-        transition: 1s;
-      }
+  componentDidMount() {
+    this.animateBackground(this.props.pathname);
+  }
 
-      svg path {
-        fill: rgba(0, 0, 0, 0.15);
-        transition: 1s;
-      }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.pathname !== nextProps.pathname) {
+      this.timeout && clearTimeout(this.timeout);
+      this.setState(
+        {
+          transitionInlineStyle: { transition: "1s" }
+        },
+        () => anime.remove("#morphing path")
+      );
+    }
+  }
 
-      main {
-        position: relative;
-        z-index: 2;
-        padding: 50px;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
+  componentDidUpdate(prevProps) {
+    if (prevProps.pathname !== this.props.pathname) {
+      this.timeout = setTimeout(() => {
+        this.setState(
+          {
+            transitionInlineStyle: {}
+          },
+          () => this.animateBackground(this.props.pathname)
+        );
+      }, 1000);
+    }
+  }
 
-      .source {
-        position: fixed;
-        left: 60px;
-        bottom: 40px;
-      }
+  animateBackground = pathname => {
+    this.animation = anime({
+      targets: "#morphing path",
+      d: getShapes(pathname),
+      easing: "linear",
+      duration: 5000,
+      direction: "alternate",
+      loop: true
+    });
+  };
 
-      .source a {
-        color: #fff;
-        text-decoration: none;
-      }
+  render() {
+    const { pathname, children } = this.props;
+    const { transitionInlineStyle } = this.state;
+    return (
+      <>
+        <div className="background">
+          <svg id="morphing" width="1366" height="768" viewBox="0 0 1366 768">
+            <path d={getShapes(pathname)[0]} style={transitionInlineStyle} />
+          </svg>
+        </div>
+        <div className="content">
+          <Header pathname={pathname} />
+          <main>{children}</main>
+          <footer>
+            <a href="https://github.com/sthobis/sthobis.github.io/tree/dev">
+              {`< view source >`}
+            </a>
+          </footer>
+          <div className="sns">
+            <a href="https://twitter.com/iBoht">twitter</a>
+            <a href="https://instagram.com/thobiisnaga">instagram</a>
+          </div>
+        </div>
+        <style jsx>{`
+          .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background-color: ${getBackgroundColor(pathname)};
+            transition: 1s;
+          }
 
-      .sns {
-        position: fixed;
-        right: 50px;
-        bottom: 50px;
-        text-align: right;
-        writing-mode: vertical-lr;
-      }
+          svg {
+            width: 100%;
+            height: 100%;
+            transform-origin: 50% 50%;
+            transform: scale(1.3);
+            transition: 1s;
+          }
 
-      .sns a {
-        color: #fff;
-        text-decoration: none;
-        margin-top: 20px;
-      }
+          svg path {
+            fill: rgba(0, 0, 0, 0.15);
+          }
 
-      @media (orientation: portrait) {
-        svg {
-          transform: scale(2.6) rotate(114deg);
-        }
-      }
-    `}</style>
-    <style global jsx>{`
-      * {
-        box-sizing: border-box;
-      }
+          .content {
+            position: relative;
+            z-index: 2;
+            padding: 50px 100px 50px 50px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+          }
 
-      html {
-        font-size: 10px;
-      }
+          main {
+            flex: auto;
+          }
 
-      body {
-        color: #fff;
-        margin: 0;
-        font-family: "Ropa Sans", sans-serif;
-        font-size: 2rem;
-        line-height: 1.5;
-        background: #363dc2;
-      }
-    `}</style>
-  </>
-);
+          footer {
+            display: flex;
+            align-items: flex-end;
+            height: 50px;
+          }
+
+          footer a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 0 0 10px;
+          }
+
+          .sns {
+            position: fixed;
+            right: 50px;
+            bottom: 50px;
+            text-align: right;
+            writing-mode: vertical-lr;
+          }
+
+          .sns a {
+            color: #fff;
+            text-decoration: none;
+            margin: 10px 0;
+          }
+
+          @media (orientation: portrait) {
+            svg {
+              transform: scale(2.6) rotate(114deg);
+            }
+          }
+        `}</style>
+        <style global jsx>{`
+          * {
+            box-sizing: border-box;
+          }
+
+          html {
+            font-size: 10px;
+          }
+
+          body {
+            color: #fff;
+            margin: 0;
+            font-family: "Ropa Sans", sans-serif;
+            font-size: 2rem;
+            line-height: 1.5;
+            background: #363dc2;
+            overflow-x: hidden;
+          }
+        `}</style>
+      </>
+    );
+  }
+}
 
 export default Layout;
