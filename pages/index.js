@@ -60,10 +60,11 @@ class IndexPage extends Component {
         </div>
         <style jsx>{`
           #home {
-            margin: 100px 0 100px 0;
+            align-self: center;
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin: 50px auto;
           }
 
           p {
