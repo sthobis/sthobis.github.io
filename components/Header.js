@@ -2,18 +2,20 @@ import Link from "next/link";
 import React from "react";
 
 const Header = ({ pathname }) => (
-  <nav>
-    <Link prefetch href="/">
-      <a className={pathname === "/" ? "active" : undefined}>home</a>
-    </Link>
-    <Link prefetch href="/projects">
-      <a className={pathname === "/projects" ? "active" : undefined}>
-        projects
-      </a>
-    </Link>
-    <a href="https://github.com/sthobis">github</a>
-    <a href="mailto:s.thobi.sinaga@gmail.com?Subject=Hi%20Thobi">email</a>
-    <span className="blob" />
+  <header>
+    <nav>
+      <Link prefetch href="/">
+        <a className={pathname === "/" ? "active" : undefined}>home</a>
+      </Link>
+      <Link prefetch href="/projects">
+        <a className={pathname === "/projects" ? "active" : undefined}>
+          projects
+        </a>
+      </Link>
+      <a href="https://github.com/sthobis">github</a>
+      <a href="mailto:s.thobi.sinaga@gmail.com?Subject=Hi%20Thobi">email</a>
+      <span className="blob" />
+    </nav>
     <style jsx>{`
       nav {
         display: flex;
@@ -91,7 +93,7 @@ const Header = ({ pathname }) => (
         transition: 0.5s;
       }
     `}</style>
-  </nav>
+  </header>
 );
 
 export default Header;
