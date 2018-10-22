@@ -138,6 +138,8 @@ class Layout extends Component {
 
           main {
             flex: auto;
+            display: flex;
+            margin: 0 0 0 10px;
           }
 
           footer {
