@@ -84,7 +84,7 @@ class Layout extends Component {
     const { pathname, children } = this.props;
     const { transitionInlineStyle } = this.state;
     return (
-      <>
+      <div className="layout">
         <div className="background">
           <svg id="morphing" width="1366" height="768" viewBox="0 0 1366 768">
             <path d={getShapes(pathname)[0]} style={transitionInlineStyle} />
@@ -98,10 +98,10 @@ class Layout extends Component {
               {`< view source >`}
             </a>
           </footer>
-          <div className="sns">
-            <a href="https://twitter.com/iBoht">twitter</a>
-            <a href="https://instagram.com/thobiisnaga">instagram</a>
-          </div>
+        </div>
+        <div className="socmed">
+          <a href="https://twitter.com/iBoht">twitter</a>
+          <a href="https://instagram.com/thobiisnaga">instagram</a>
         </div>
         <style jsx>{`
           .background {
@@ -130,7 +130,7 @@ class Layout extends Component {
           .content {
             position: relative;
             z-index: 2;
-            padding: 50px 100px 50px 50px;
+            padding: 50px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -139,7 +139,7 @@ class Layout extends Component {
           main {
             flex: auto;
             display: flex;
-            margin: 0 0 0 10px;
+            margin: 0 75px;
           }
 
           footer {
@@ -154,15 +154,16 @@ class Layout extends Component {
             margin: 0 0 0 10px;
           }
 
-          .sns {
+          .socmed {
             position: fixed;
+            z-index: 3;
             right: 50px;
             bottom: 50px;
             text-align: right;
             writing-mode: vertical-lr;
           }
 
-          .sns a {
+          .socmed a {
             color: #fff;
             text-decoration: none;
             margin: 10px 0;
@@ -192,8 +193,14 @@ class Layout extends Component {
             background: #363dc2;
             overflow-x: hidden;
           }
+
+          input,
+          textarea,
+          button {
+            font-family: "Ropa Sans", sans-serif;
+          }
         `}</style>
-      </>
+      </div>
     );
   }
 }
