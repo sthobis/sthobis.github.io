@@ -14,10 +14,11 @@ const Header = ({ pathname }) => (
       </Link>
       <a href="https://github.com/sthobis">github</a>
       <a href="mailto:s.thobi.sinaga@gmail.com?Subject=Hi%20Thobi">email</a>
-      <span className="blob" />
+      <span className="capsule" />
     </nav>
     <style jsx>{`
       nav {
+        position: relative;
         display: flex;
       }
 
@@ -29,40 +30,41 @@ const Header = ({ pathname }) => (
         z-index: 2;
       }
 
-      a:hover ~ .blob {
+      .capsule {
+        position: absolute;
+        z-index: 1;
+        top: 5px;
+        left: -120px;
+        width: 60px;
+        height: 40px;
+        border-radius: 2px;
+        display: block;
+        background-color: rgba(255, 255, 255, 0.2);
+        transition: 0.3s;
+      }
+
+      a:hover ~ .capsule {
         opacity: 1;
       }
 
-      a:nth-child(1):hover ~ .blob {
-        top: 52px;
-        left: 40px;
-        border-radius: 75% 50% 63% 40%;
-        width: 80px;
-        height: 42px;
+      a:nth-child(1):hover ~ .capsule {
+        left: 0;
+        width: 62px;
       }
 
-      a:nth-child(2):hover ~ .blob {
-        top: 56px;
-        left: 111px;
-        border-radius: 55% 74% 63% 70%;
-        width: 84px;
-        height: 44px;
+      a:nth-child(2):hover ~ .capsule {
+        left: 63px;
+        width: 81px;
       }
 
-      a:nth-child(3):hover ~ .blob {
-        top: 52px;
-        left: 188px;
-        border-radius: 75% 55% 83% 60%;
-        width: 80px;
-        height: 46px;
+      a:nth-child(3):hover ~ .capsule {
+        left: 144px;
+        width: 69px;
       }
 
-      a:nth-child(4):hover ~ .blob {
-        top: 56px;
-        left: 258px;
-        border-radius: 55% 74% 63% 70%;
-        width: 76px;
-        height: 40px;
+      a:nth-child(4):hover ~ .capsule {
+        left: 214px;
+        width: 61px;
       }
 
       .active {
@@ -78,19 +80,6 @@ const Header = ({ pathname }) => (
         right: 10px;
         height: 0;
         border-bottom: 1px dashed #f5359e;
-      }
-
-      .blob {
-        position: absolute;
-        z-index: 1;
-        top: 50px;
-        left: -100px;
-        width: 80px;
-        height: 44px;
-        border-radius: 50%;
-        display: block;
-        background-color: rgba(255, 255, 255, 0.2);
-        transition: 0.5s;
       }
     `}</style>
   </header>

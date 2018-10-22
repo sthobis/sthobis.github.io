@@ -34,8 +34,7 @@ class IndexPage extends Component {
           targets: "h2",
           rotateX: [110, 0],
           opacity: 1,
-          duration: 600,
-          delay: 200
+          duration: 600
         }).finished;
       });
   };

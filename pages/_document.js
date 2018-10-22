@@ -27,7 +27,7 @@ class MyDocument extends Document {
           />
           <script dangerouslySetInnerHTML={{ __html: gTagScript }} /> */}
           <link
-            href="https://fonts.googleapis.com/css?family=Raleway:800|Ropa+Sans"
+            href="https://fonts.googleapis.com/css?family=Raleway:800|Ropa+Sans:400,400i"
             rel="stylesheet"
           />
           <link
