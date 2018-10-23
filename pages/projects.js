@@ -55,6 +55,11 @@ const KEYS_CODE = {
   DOWN: 40
 };
 
+const ARROW_TYPE = {
+  PREV: "prev",
+  NEXT: "next"
+};
+
 class ProjectsPage extends Component {
   state = {
     activeProjectIndex: 0
@@ -73,6 +78,7 @@ class ProjectsPage extends Component {
     anime.remove("#projects .text .wrap");
     anime.remove("#projects .thumbnail img");
     anime.remove("#projects .arrows");
+    anime.remove("#projects .arrows button svg");
     clearTimeout(this.timeout);
     document.removeEventListener("keydown", this.handleKeyDown);
   }
@@ -93,6 +99,7 @@ class ProjectsPage extends Component {
   };
 
   prevProject = () => {
+    this.animateArrowsButton(ARROW_TYPE.PREV);
     this.scrollTop();
     this.prevButton.blur();
     this.setState(
@@ -107,6 +114,7 @@ class ProjectsPage extends Component {
   };
 
   nextProject = () => {
+    this.animateArrowsButton(ARROW_TYPE.NEXT);
     this.scrollTop();
     this.nextButton.blur();
     this.setState(
@@ -168,6 +176,22 @@ class ProjectsPage extends Component {
       delay: 400,
       duration: 1000
     });
+  };
+
+  animateArrowsButton = type => {
+    const targets =
+      type === ARROW_TYPE.PREV
+        ? "#projects .arrows button:first-child svg"
+        : "#projects .arrows button:last-child svg";
+    anime.remove(targets);
+    let translate = anime({
+      targets,
+      translateX: type === ARROW_TYPE.PREV ? [0, -6] : [0, 6],
+      easing: "easeOutSine",
+      duration: 800
+    });
+    translate.reverse();
+    translate.play();
   };
 
   render() {
@@ -375,11 +399,13 @@ class ProjectsPage extends Component {
             transition: 0.3s;
           }
 
-          .arrows button:hover {
+          .arrows button:hover,
+          .arrows button:focus {
             background-color: rgba(255, 255, 255, 0.3);
           }
 
-          .arrows button:hover path {
+          .arrows button:hover path,
+          .arrows button:focus path {
             fill: rgba(255, 255, 255, 1);
           }
 
