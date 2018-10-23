@@ -1,4 +1,5 @@
 import anime from "animejs";
+import Head from "next/head";
 import React, { Component } from "react";
 import Header from "./Header";
 
@@ -85,6 +86,13 @@ class Layout extends Component {
     const { transitionInlineStyle } = this.state;
     return (
       <div className="layout">
+        <Head>
+          <title>
+            {pathname === "/projects"
+              ? "Projects - Stefanus Thobi Sinaga"
+              : "Stefanus Thobi Sinaga"}
+          </title>
+        </Head>
         <div className="background">
           <svg id="morphing" width="1366" height="768" viewBox="0 0 1366 768">
             <path d={getShapes(pathname)[0]} style={transitionInlineStyle} />
