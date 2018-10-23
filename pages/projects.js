@@ -93,6 +93,7 @@ class ProjectsPage extends Component {
   };
 
   prevProject = () => {
+    this.scrollTop();
     this.prevButton.blur();
     this.setState(
       prevState => ({
@@ -101,16 +102,12 @@ class ProjectsPage extends Component {
             ? prevState.activeProjectIndex - 1
             : projects.length - 1
       }),
-      () => {
-        anime.remove("#projects .text .wrap");
-        anime.remove("#projects .thumbnail img");
-        this.animateProjectText();
-        this.animateProjectThumbnail();
-      }
+      this.reanimateProject
     );
   };
 
   nextProject = () => {
+    this.scrollTop();
     this.nextButton.blur();
     this.setState(
       prevState => ({
@@ -119,13 +116,28 @@ class ProjectsPage extends Component {
             ? prevState.activeProjectIndex + 1
             : 0
       }),
-      () => {
-        anime.remove("#projects .text .wrap");
-        anime.remove("#projects .thumbnail img");
-        this.animateProjectText();
-        this.animateProjectThumbnail();
-      }
+      this.reanimateProject
     );
+  };
+
+  scrollTop = () => {
+    let offsetTop = this.container.offsetTop;
+    try {
+      offsetTop -= parseInt(window.getComputedStyle(this.container).marginTop);
+    } catch (err) {
+      // noop
+    }
+    window.scrollTo({
+      top: offsetTop,
+      behavior: "smooth"
+    });
+  };
+
+  reanimateProject = () => {
+    anime.remove("#projects .text .wrap");
+    anime.remove("#projects .thumbnail img");
+    this.animateProjectText();
+    this.animateProjectThumbnail();
   };
 
   animateProjectText = () => {
@@ -142,7 +154,7 @@ class ProjectsPage extends Component {
   animateProjectThumbnail = () => {
     anime({
       targets: "#projects .thumbnail img",
-      translateX: ["-100%", 0],
+      translateX: ["-101%", 0],
       easing: "easeOutCubic",
       duration: 1400
     });
@@ -161,22 +173,27 @@ class ProjectsPage extends Component {
   render() {
     const { activeProjectIndex } = this.state;
     return (
-      <div id="projects">
+      <div ref={el => (this.container = el)} id="projects">
         <section>
           <div className="text">
             <div className="wrap">
               <h1>{projects[activeProjectIndex].name}</h1>
               <p>{projects[activeProjectIndex].description}</p>
               <div className="links">
-                {projects[activeProjectIndex].links.map(link => (
-                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                {projects[activeProjectIndex].links.map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {link.text}
                   </a>
                 ))}
               </div>
               <div className="tags">
                 {projects[activeProjectIndex].tags.map(tag => (
-                  <span>{tag}</span>
+                  <span key={tag}>{tag}</span>
                 ))}
               </div>
             </div>
@@ -198,7 +215,7 @@ class ProjectsPage extends Component {
               <svg
                 stroke="currentColor"
                 fill="currentColor"
-                stroke-width="0"
+                strokeWidth="0"
                 viewBox="0 0 256 512"
                 height="1em"
                 width="1em"
@@ -214,7 +231,7 @@ class ProjectsPage extends Component {
               <svg
                 stroke="currentColor"
                 fill="currentColor"
-                stroke-width="0"
+                strokeWidth="0"
                 viewBox="0 0 256 512"
                 height="1em"
                 width="1em"
@@ -237,7 +254,7 @@ class ProjectsPage extends Component {
             width: 100%;
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: center;
             align-items: stretch;
           }
 
@@ -285,14 +302,26 @@ class ProjectsPage extends Component {
             border-bottom: 1px dashed #f5359e;
           }
 
+          .links a:first-child {
+            margin-left: 0;
+          }
+
           .tags {
             display: flex;
+            flex-direction: row-reverse;
+            flex-wrap: wrap;
+            align-items: flex-end;
             font-size: 1.6rem;
           }
 
           .tags span {
-            margin: 0 0 10px 10px;
+            line-height: 1;
+            margin: 0 0 5px 10px;
             font-style: italic;
+          }
+
+          .tags span:first-child {
+            margin-left: 0;
           }
 
           .thumbnail {
@@ -320,7 +349,7 @@ class ProjectsPage extends Component {
             top: 0;
             left: 0;
             width: 100%;
-            transform: translateX(-100%);
+            transform: translateX(-101%);
           }
 
           .arrows {
@@ -361,6 +390,111 @@ class ProjectsPage extends Component {
 
           .arrows button:last-child {
             margin-left: 10px;
+          }
+
+          @media (max-width: 1400px) {
+            #projects {
+              margin: 30px 0;
+            }
+
+            .thumbnail > div {
+              width: 75%;
+            }
+          }
+
+          @media (max-width: 1024px) and (orientation: landscape) {
+            h1 {
+              font-size: 5rem;
+            }
+
+            .thumbnail > div {
+              width: 100%;
+            }
+          }
+
+          @media (max-width: 1024px) and (orientation: portrait) {
+            section {
+              flex-direction: column;
+              align-items: center;
+            }
+
+            .text {
+              width: 100%;
+              margin: 30px 0 0 0;
+              order: 2;
+            }
+
+            .wrap {
+              align-items: center;
+              text-align: center;
+              margin-bottom: 30px;
+            }
+
+            .links,
+            .tags {
+              justify-content: center;
+            }
+
+            .links a {
+              margin-left: 10px;
+              margin-right: 10px;
+            }
+
+            .tags span {
+              margin-left: 5px;
+              margin-right: 5px;
+            }
+
+            .thumbnail {
+              width: 100%;
+              justify-content: center;
+              order: 1;
+            }
+
+            .arrows {
+              position: static;
+              order: 3;
+            }
+          }
+
+          @media (max-width: 767px) {
+            section {
+              flex-direction: column;
+              align-items: center;
+            }
+
+            .text {
+              width: 100%;
+              margin: 30px 0 0 0;
+              order: 2;
+            }
+
+            .wrap {
+              align-items: center;
+              text-align: center;
+              margin-bottom: 30px;
+            }
+
+            .thumbnail {
+              width: 100%;
+              justify-content: center;
+              order: 1;
+            }
+
+            .arrows {
+              position: static;
+              order: 3;
+            }
+          }
+
+          @media (max-width: 767px) and (orientation: portrait) {
+            h1 {
+              font-size: 4rem;
+            }
+
+            .thumbnail div {
+              width: 100%;
+            }
           }
         `}</style>
       </div>
