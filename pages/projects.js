@@ -66,6 +66,10 @@ class ProjectsPage extends Component {
   };
 
   componentDidMount() {
+    const thumbnailImages = projects.map(
+      project => `/static/images/${project.name}.png`
+    );
+    this.preloadImages(thumbnailImages);
     this.timeout = setTimeout(() => {
       this.animateProjectText();
       this.animateProjectThumbnail();
@@ -82,6 +86,12 @@ class ProjectsPage extends Component {
     clearTimeout(this.timeout);
     document.removeEventListener("keydown", this.handleKeyDown);
   }
+
+  preloadImages = sources => {
+    sources.forEach(src => {
+      new Image().src = src;
+    });
+  };
 
   handleKeyDown = e => {
     switch (e.which) {
