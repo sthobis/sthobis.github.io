@@ -122,6 +122,7 @@ class IndexPage extends Component {
 
           h2 {
             margin: 30px 0 0 0;
+            font-size: 3rem;
             font-weight: 400;
             text-align: right;
             line-height: 1.1;
@@ -137,6 +138,35 @@ class IndexPage extends Component {
             color: #fff;
             text-decoration: none;
             border-bottom: 1px dashed #f5359e;
+          }
+
+          @media (max-width: 1400px) {
+            h1 {
+              font-size: 8.4rem;
+            }
+          }
+
+          @media (max-width: 1400px) and (orientation: portrait) {
+            h1 {
+              font-size: 12rem;
+            }
+          }
+
+          @media (max-width: 1024px) and (orientation: portrait) {
+            h1 {
+              font-size: 10rem;
+            }
+          }
+
+          @media (max-width: 767px) {
+            h1 {
+              font-size: 4rem;
+              padding-left: 35px;
+            }
+
+            h2 {
+              font-size: 2rem;
+            }
           }
         `}</style>
       </div>

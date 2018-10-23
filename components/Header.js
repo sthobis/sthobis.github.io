@@ -81,6 +81,21 @@ const Header = ({ pathname }) => (
         height: 0;
         border-bottom: 1px dashed #f5359e;
       }
+
+      @media (max-width: 767px) {
+        .capsule {
+          display: none;
+        }
+      }
+
+      @media (max-width: 767px) and (orientation: portrait) {
+        nav {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 767px) and (orientation: landscape) {
+      }
     `}</style>
   </header>
 );

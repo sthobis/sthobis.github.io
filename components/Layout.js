@@ -104,6 +104,10 @@ class Layout extends Component {
           <a href="https://instagram.com/thobiisnaga">instagram</a>
         </div>
         <style jsx>{`
+          .layout {
+            position: relative;
+          }
+
           .background {
             position: fixed;
             top: 0;
@@ -145,7 +149,6 @@ class Layout extends Component {
           footer {
             display: flex;
             align-items: flex-end;
-            height: 50px;
           }
 
           footer a {
@@ -155,7 +158,7 @@ class Layout extends Component {
           }
 
           .socmed {
-            position: fixed;
+            position: absolute;
             z-index: 3;
             right: 50px;
             bottom: 50px;
@@ -173,6 +176,62 @@ class Layout extends Component {
             svg {
               transform: scale(2.6) rotate(114deg);
             }
+          }
+
+          @media (max-width: 767px) {
+            .content {
+              padding: 30px;
+            }
+
+            .socmed {
+              right: 30px;
+              bottom: 30px;
+            }
+          }
+
+          @media (max-width: 767px) and (orientation: landscape) {
+            main {
+              margin: 0 55px;
+            }
+          }
+
+          @media (max-width: 767px) and (orientation: portrait) {
+            .content {
+              align-items: center;
+              min-height: calc(100vh - 60px);
+            }
+
+            main {
+              margin: 0 10px;
+            }
+
+            footer {
+              display: none;
+            }
+
+            .socmed {
+              position: relative;
+              right: auto;
+              bottom: auto;
+              writing-mode: lr;
+              text-align: center;
+              display: flex;
+              justify-content: center;
+              margin: 0 0 30px 0;
+            }
+
+            .socmed a {
+              display: block;
+              height: 30px;
+              margin: 0;
+            }
+
+            .socmed a + a {
+              margin-left: 20px;
+            }
+          }
+
+          @media (max-width: 767px) and (orientation: landscape) {
           }
         `}</style>
         <style global jsx>{`
