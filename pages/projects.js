@@ -66,10 +66,6 @@ class ProjectsPage extends Component {
   };
 
   componentDidMount() {
-    const thumbnailImages = projects.map(
-      project => `/static/images/${project.name}.png`
-    );
-    this.preloadImages(thumbnailImages);
     this.timeout = setTimeout(() => {
       this.animateProjectText();
       this.animateProjectThumbnail();
@@ -80,18 +76,12 @@ class ProjectsPage extends Component {
 
   componentWillUnmount() {
     anime.remove("#projects .text .wrap");
-    anime.remove("#projects .thumbnail img");
+    anime.remove("#projects .thumbnail .clip");
     anime.remove("#projects .arrows");
     anime.remove("#projects .arrows button svg");
     clearTimeout(this.timeout);
     document.removeEventListener("keydown", this.handleKeyDown);
   }
-
-  preloadImages = sources => {
-    sources.forEach(src => {
-      new Image().src = src;
-    });
-  };
 
   handleKeyDown = e => {
     switch (e.which) {
@@ -118,7 +108,10 @@ class ProjectsPage extends Component {
             ? prevState.activeProjectIndex - 1
             : projects.length - 1
       }),
-      this.reanimateProject
+      () => {
+        anime.remove("#projects .text .wrap");
+        this.animateProjectText();
+      }
     );
   };
 
@@ -132,35 +125,43 @@ class ProjectsPage extends Component {
             ? prevState.activeProjectIndex + 1
             : 0
       }),
-      this.reanimateProject
+      () => {
+        anime.remove("#projects .text .wrap");
+        this.animateProjectText();
+      }
     );
-  };
-
-  reanimateProject = () => {
-    anime.remove("#projects .text .wrap");
-    anime.remove("#projects .thumbnail img");
-    this.animateProjectText();
-    this.animateProjectThumbnail();
-  };
-
-  animateProjectText = () => {
-    anime({
-      targets: "#projects .text .wrap",
-      translateX: ["100%", 0],
-      opacity: [0, 1],
-      easing: "easeOutCubic",
-      delay: 200,
-      duration: 1200
-    });
   };
 
   animateProjectThumbnail = () => {
     anime({
-      targets: "#projects .thumbnail img",
+      targets: "#projects .thumbnail .clip",
       translateX: ["-101%", 0],
       easing: "easeOutCubic",
       duration: 1400
     });
+  };
+
+  animateProjectText = () => {
+    const isLandscape = window.innerWidth > window.innerHeight;
+    if (isLandscape) {
+      anime({
+        targets: "#projects .text .wrap",
+        translateX: ["100%", 0],
+        opacity: [0, 1],
+        easing: "easeOutCubic",
+        delay: 200,
+        duration: 1200
+      });
+    } else {
+      anime({
+        targets: "#projects .text .wrap",
+        translateY: ["-100%", 0],
+        opacity: [0, 1],
+        easing: "easeOutCubic",
+        delay: 200,
+        duration: 800
+      });
+    }
   };
 
   animateArrowsContainer = () => {
@@ -218,11 +219,18 @@ class ProjectsPage extends Component {
             </div>
           </div>
           <div className="thumbnail">
-            <div>
-              <img
-                src={`/static/images/${projects[activeProjectIndex].name}.png`}
-                alt={projects[activeProjectIndex].name}
-              />
+            <div className="clip">
+              {projects.map((project, i) => (
+                <img
+                  key={project.name}
+                  src={`/static/images/${project.name}.png`}
+                  alt={project.name}
+                  style={{
+                    transform: `translateY(${i * 100 -
+                      activeProjectIndex * 100}%)`
+                  }}
+                />
+              ))}
             </div>
           </div>
           <div className="arrows">
@@ -351,24 +359,26 @@ class ProjectsPage extends Component {
             overflow: hidden;
           }
 
-          .thumbnail > div {
+          .clip {
             position: relative;
             width: 80%;
             overflow: hidden;
+            transform: translateX(-101%);
           }
 
-          .thumbnail > div::before {
+          .clip::before {
             content: "";
             display: block;
             padding-bottom: 100%;
           }
 
-          .thumbnail img {
+          .clip img {
             position: absolute;
-            top: 0;
+            top: -1px;
             left: 0;
-            width: 100%;
-            transform: translateX(-101%);
+            width: auto;
+            height: calc(100% + 2px);
+            transition: 1s;
           }
 
           .arrows {
@@ -414,21 +424,39 @@ class ProjectsPage extends Component {
           }
 
           @media (max-width: 1400px) {
-            #projects {
-              margin: 30px 0;
-            }
-
-            .thumbnail > div {
+            .clip {
               width: 75%;
             }
           }
 
-          @media (max-width: 1024px) and (orientation: landscape) {
+          @media (max-width: 1400px) and (orientation: landscape) {
             h1 {
               font-size: 5rem;
             }
+          }
 
-            .thumbnail > div {
+          @media (max-width: 1400px) and (orientation: portrait) {
+            #projects {
+              margin: 30px 0;
+            }
+
+            h1 {
+              font-size: 5rem;
+            }
+          }
+
+          @media (max-width: 1024px) {
+            #projects {
+              margin: 30px 0;
+            }
+
+            .clip {
+              width: 100%;
+            }
+          }
+
+          @media (max-width: 1024px) and (orientation: landscape) {
+            .clip {
               width: 100%;
             }
           }
@@ -513,7 +541,7 @@ class ProjectsPage extends Component {
               font-size: 4rem;
             }
 
-            .thumbnail div {
+            .clip {
               width: 100%;
             }
           }
