@@ -100,7 +100,6 @@ class ProjectsPage extends Component {
 
   prevProject = () => {
     this.animateArrowsButton(ARROW_TYPE.PREV);
-    this.scrollTop();
     this.prevButton.blur();
     this.setState(
       prevState => ({
@@ -115,7 +114,6 @@ class ProjectsPage extends Component {
 
   nextProject = () => {
     this.animateArrowsButton(ARROW_TYPE.NEXT);
-    this.scrollTop();
     this.nextButton.blur();
     this.setState(
       prevState => ({
@@ -126,19 +124,6 @@ class ProjectsPage extends Component {
       }),
       this.reanimateProject
     );
-  };
-
-  scrollTop = () => {
-    let offsetTop = this.container.offsetTop;
-    try {
-      offsetTop -= parseInt(window.getComputedStyle(this.container).marginTop);
-    } catch (err) {
-      // noop
-    }
-    window.scrollTo({
-      top: offsetTop,
-      behavior: "smooth"
-    });
   };
 
   reanimateProject = () => {
