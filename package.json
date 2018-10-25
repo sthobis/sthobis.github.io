@@ -17,10 +17,10 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "export": "yarn build && next export -o build",
+    "export": "yarn build && next export -o build && node post-build.js",
     "start": "next start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "yarn build && yarn export && gh-pages -d build -b master"
+    "deploy": "yarn export && gh-pages -d build -b master"
   },
   "devDependencies": {
     "gh-pages": "^1.1.0"
