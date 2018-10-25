@@ -335,9 +335,10 @@ class ProjectsPage extends Component {
 
           .tags {
             display: flex;
-            flex-direction: row-reverse;
+            flex-direction: row;
             flex-wrap: wrap;
-            align-items: flex-end;
+            justify-content: flex-end;
+            align-items: center;
             font-size: 1.6rem;
           }
 
