@@ -238,6 +238,7 @@ class ProjectsPage extends Component {
               ref={el => (this.prevButton = el)}
               type="button"
               onClick={this.prevProject}
+              aria-label="previous project"
             >
               <svg
                 stroke="currentColor"
@@ -254,6 +255,7 @@ class ProjectsPage extends Component {
               ref={el => (this.nextButton = el)}
               type="button"
               onClick={this.nextProject}
+              aria-label="next project"
             >
               <svg
                 stroke="currentColor"
