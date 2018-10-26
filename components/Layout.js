@@ -37,42 +37,38 @@ const getBackgroundColor = pathname => {
 };
 
 class Layout extends Component {
-  state = {
-    transitionInlineStyle: {}
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      initialShape: getShapes(this.props.pathname)[0]
+    };
+  }
   componentDidMount() {
     this.animateBackground(this.props.pathname);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.pathname !== nextProps.pathname) {
+  componentDidUpdate(prevProps) {
+    if (this.props.pathname !== prevProps.pathname) {
       this.timeout && clearTimeout(this.timeout);
-      this.setState(
-        {
-          transitionInlineStyle: { transition: "1s" }
-        },
-        () => anime.remove("#morphing path")
-      );
+      anime.remove(this.background);
+      this.morphBackground(this.props.pathname);
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.pathname !== this.props.pathname) {
-      this.timeout = setTimeout(() => {
-        this.setState(
-          {
-            transitionInlineStyle: {}
-          },
-          () => this.animateBackground(this.props.pathname)
-        );
-      }, 1000);
-    }
-  }
+  morphBackground = pathname => {
+    anime({
+      targets: this.background,
+      d: getShapes(pathname)[0],
+      duration: 1000,
+      easing: "easeInOutQuad"
+    }).finished.then(() => {
+      this.animateBackground(pathname);
+    });
+  };
 
   animateBackground = pathname => {
-    this.animation = anime({
-      targets: "#morphing path",
+    anime({
+      targets: this.background,
       d: getShapes(pathname),
       easing: "linear",
       duration: 5000,
@@ -83,7 +79,7 @@ class Layout extends Component {
 
   render() {
     const { pathname, children } = this.props;
-    const { transitionInlineStyle } = this.state;
+    const { initialShape } = this.state;
     return (
       <div className="layout">
         <Head>
@@ -94,8 +90,13 @@ class Layout extends Component {
           </title>
         </Head>
         <div className="background">
-          <svg id="morphing" width="1366" height="768" viewBox="0 0 1366 768">
-            <path d={getShapes(pathname)[0]} style={transitionInlineStyle} />
+          <svg width="1366" height="768" viewBox="0 0 1366 768">
+            <path
+              ref={el => {
+                this.background = el;
+              }}
+              d={initialShape}
+            />
           </svg>
         </div>
         <div className="content">
