@@ -2,20 +2,23 @@ import anime from "animejs";
 import React, { Component } from "react";
 
 class IndexPage extends Component {
+  constructor(props) {
+    super(props);
+    this.subtitles = [];
+  }
+
   componentDidMount() {
     this.timeout = setTimeout(this.animateText, 800);
   }
 
   componentWillUnmount() {
-    anime.remove("#home h1");
-    anime.remove("#home h1 span:nth-child(1)");
-    anime.remove("#home h1 span:nth-child(3)");
+    anime.remove([this.title, this.subtitle, this.description]);
     clearTimeout(this.timeout);
   }
 
   animateText = () => {
     anime({
-      targets: "#home h1",
+      targets: this.title,
       translateX: ["70%", 0],
       opacity: 1,
       duration: 800,
@@ -23,7 +26,7 @@ class IndexPage extends Component {
     })
       .finished.then(() => {
         return anime({
-          targets: ["#home h1 span:nth-child(1)", "#home h1 span:nth-child(3)"],
+          targets: this.subtitles,
           translateY: (el, i) => (i === 0 ? ["100%", 0] : ["-100%", 0]),
           opacity: 1,
           duration: 600
@@ -31,7 +34,7 @@ class IndexPage extends Component {
       })
       .then(() => {
         return anime({
-          targets: "h2",
+          targets: this.description,
           rotateX: [110, 0],
           opacity: 1,
           duration: 600
@@ -43,12 +46,32 @@ class IndexPage extends Component {
     return (
       <div id="home">
         <div>
-          <h1>
-            <span>stefanus</span>
+          <h1
+            ref={el => {
+              this.title = el;
+            }}
+          >
+            <span
+              ref={el => {
+                this.subtitles.push(el);
+              }}
+            >
+              stefanus
+            </span>
             <span>thobi</span>
-            <span>sinaga</span>
+            <span
+              ref={el => {
+                this.subtitles.push(el);
+              }}
+            >
+              sinaga
+            </span>
           </h1>
-          <h2>
+          <h2
+            ref={el => {
+              this.description = el;
+            }}
+          >
             javascript <span>web / mobile</span> developer
             <br />
             available for{" "}

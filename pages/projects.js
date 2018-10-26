@@ -1,84 +1,32 @@
 import anime from "animejs";
 import React, { Component } from "react";
-
-const projects = [
-  {
-    name: "molondry",
-    links: [
-      {
-        href: "https://molondry.com",
-        text: "Live site"
-      },
-      {
-        href: "https://itunes.apple.com/us/app/molondry/id1413776306?ls=1&mt=8",
-        text: "AppStore"
-      },
-      {
-        href: "https://play.google.com/store/apps/details?id=com.molondry",
-        text: "PlayStore"
-      }
-    ],
-    tags: ["express", "mongodb", "react", "react-native", "expo", "ui design"],
-    description:
-      "Molondry is web / mobile (integrated) app for ordering laundry service."
-  },
-  {
-    name: "duajarimanis",
-    links: [
-      {
-        href: "https://duajarimanis.com",
-        text: "Live site"
-      }
-    ],
-    tags: ["express", "mongodb", "react", "next.js", "ui design"],
-    description:
-      "Duajarimanis is a static wedding site generator with a built-in WYSIWYG editor."
-  },
-  {
-    name: "igfluencer",
-    links: [
-      {
-        href: "https://igfluencer.id",
-        text: "Live site"
-      }
-    ],
-    tags: ["express", "mongodb", "react", "next.js", "ui design"],
-    description:
-      "Igfluencer is an online platform to find top instagram influencers in Indonesia."
-  }
-];
-
-const KEYS_CODE = {
-  LEFT: 37,
-  UP: 38,
-  RIGHT: 39,
-  DOWN: 40
-};
-
-const ARROW_TYPE = {
-  PREV: "prev",
-  NEXT: "next"
-};
+import { ARROW_TYPE, KEYS_CODE, projects } from "../config";
 
 class ProjectsPage extends Component {
-  state = {
-    activeProjectIndex: 0
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      prevProjectIndex: 0,
+      currentProjectIndex: 0
+    };
+  }
 
   componentDidMount() {
     this.timeout = setTimeout(() => {
-      this.animateProjectText();
+      this.animateProjectDescription();
       this.animateProjectThumbnail();
-      this.animateArrowsContainer();
+      this.animateNavigation();
     }, 800);
     document.addEventListener("keydown", this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    anime.remove("#projects .text .wrap");
-    anime.remove("#projects .thumbnail .clip");
-    anime.remove("#projects .arrows");
-    anime.remove("#projects .arrows button svg");
+    anime.remove([
+      this.projectDescription,
+      this.projectThumbnail,
+      this.navigation,
+      this.navigationButtons
+    ]);
     clearTimeout(this.timeout);
     document.removeEventListener("keydown", this.handleKeyDown);
   }
@@ -103,14 +51,16 @@ class ProjectsPage extends Component {
     this.prevButton.blur();
     this.setState(
       prevState => ({
-        activeProjectIndex:
-          prevState.activeProjectIndex !== 0
-            ? prevState.activeProjectIndex - 1
+        prevProjectIndex: prevState.currentProjectIndex,
+        currentProjectIndex:
+          prevState.currentProjectIndex !== 0
+            ? prevState.currentProjectIndex - 1
             : projects.length - 1
       }),
       () => {
-        anime.remove("#projects .text .wrap");
-        this.animateProjectText();
+        anime.remove(this.projectDescription);
+        this.animateProjectDescription();
+        this.animateProjectThumbnailImage();
       }
     );
   };
@@ -120,32 +70,48 @@ class ProjectsPage extends Component {
     this.nextButton.blur();
     this.setState(
       prevState => ({
-        activeProjectIndex:
-          prevState.activeProjectIndex !== projects.length - 1
-            ? prevState.activeProjectIndex + 1
+        prevProjectIndex: prevState.currentProjectIndex,
+        currentProjectIndex:
+          prevState.currentProjectIndex !== projects.length - 1
+            ? prevState.currentProjectIndex + 1
             : 0
       }),
       () => {
-        anime.remove("#projects .text .wrap");
-        this.animateProjectText();
+        anime.remove(this.projectDescription);
+        this.animateProjectDescription();
+        this.animateProjectThumbnailImage();
       }
     );
   };
 
   animateProjectThumbnail = () => {
     anime({
-      targets: "#projects .thumbnail .clip",
+      targets: this.projectThumbnail,
       translateX: ["-101%", 0],
       easing: "easeOutCubic",
       duration: 1400
     });
   };
 
-  animateProjectText = () => {
+  animateProjectThumbnailImage = () => {
+    const { prevProjectIndex, currentProjectIndex } = this.state;
+    const translateY = [
+      `-${(prevProjectIndex / projects.length) * 100}%`,
+      `-${(currentProjectIndex / projects.length) * 100}%`
+    ];
+    anime({
+      targets: this.projectThumbnailImage,
+      translateY,
+      easing: "easeOutCubic",
+      duration: 1400
+    });
+  };
+
+  animateProjectDescription = () => {
     const isLandscape = window.innerWidth > window.innerHeight;
     if (isLandscape) {
       anime({
-        targets: "#projects .text .wrap",
+        targets: this.projectDescription,
         translateX: ["100%", 0],
         opacity: [0, 1],
         easing: "easeOutCubic",
@@ -154,7 +120,7 @@ class ProjectsPage extends Component {
       });
     } else {
       anime({
-        targets: "#projects .text .wrap",
+        targets: this.projectDescription,
         translateY: ["-100%", 0],
         opacity: [0, 1],
         easing: "easeOutCubic",
@@ -164,9 +130,9 @@ class ProjectsPage extends Component {
     }
   };
 
-  animateArrowsContainer = () => {
+  animateNavigation = () => {
     anime({
-      targets: "#projects .arrows",
+      targets: this.navigation,
       opacity: [0, 1],
       easing: "easeOutCubic",
       delay: 400,
@@ -175,14 +141,14 @@ class ProjectsPage extends Component {
   };
 
   animateArrowsButton = type => {
-    const targets =
+    const [targets, translateX] =
       type === ARROW_TYPE.PREV
-        ? "#projects .arrows button:first-child svg"
-        : "#projects .arrows button:last-child svg";
+        ? [this.prevButtonSvg, [0, -6]]
+        : [this.nextButtonSvg, [0, 6]];
     anime.remove(targets);
     let translate = anime({
       targets,
-      translateX: type === ARROW_TYPE.PREV ? [0, -6] : [0, 6],
+      translateX,
       easing: "easeOutSine",
       duration: 800
     });
@@ -191,16 +157,21 @@ class ProjectsPage extends Component {
   };
 
   render() {
-    const { activeProjectIndex } = this.state;
+    const { currentProjectIndex } = this.state;
     return (
-      <div ref={el => (this.container = el)} id="projects">
+      <div id="projects">
         <section>
           <div className="text">
-            <div className="wrap">
-              <h1>{projects[activeProjectIndex].name}</h1>
-              <p>{projects[activeProjectIndex].description}</p>
+            <div
+              ref={el => {
+                this.projectDescription = el;
+              }}
+              className="wrap"
+            >
+              <h1>{projects[currentProjectIndex].name}</h1>
+              <p>{projects[currentProjectIndex].description}</p>
               <div className="links">
-                {projects[activeProjectIndex].links.map((link, i) => (
+                {projects[currentProjectIndex].links.map((link, i) => (
                   <a
                     key={i}
                     href={link.href}
@@ -212,35 +183,53 @@ class ProjectsPage extends Component {
                 ))}
               </div>
               <div className="tags">
-                {projects[activeProjectIndex].tags.map(tag => (
+                {projects[currentProjectIndex].tags.map(tag => (
                   <span key={tag}>{tag}</span>
                 ))}
               </div>
             </div>
           </div>
           <div className="thumbnail">
-            <div className="clip">
-              {projects.map((project, i) => (
-                <img
-                  key={project.name}
-                  src={`/static/images/${project.name}.png`}
-                  alt={project.name}
-                  style={{
-                    transform: `translateY(${i * 100 -
-                      activeProjectIndex * 100}%)`
-                  }}
-                />
-              ))}
+            <div
+              ref={el => {
+                this.projectThumbnail = el;
+              }}
+              className="clip"
+            >
+              <div
+                ref={el => {
+                  this.projectThumbnailImage = el;
+                }}
+                className="container"
+              >
+                {projects.map((project, i) => (
+                  <img
+                    key={project.name}
+                    src={`/static/images/${project.name}.png`}
+                    alt={project.name}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-          <div className="arrows">
+          <div
+            ref={el => {
+              this.navigation = el;
+            }}
+            className="arrows"
+          >
             <button
-              ref={el => (this.prevButton = el)}
+              ref={el => {
+                this.prevButton = el;
+              }}
               type="button"
               onClick={this.prevProject}
               aria-label="previous project"
             >
               <svg
+                ref={el => {
+                  this.prevButtonSvg = el;
+                }}
                 stroke="currentColor"
                 fill="currentColor"
                 strokeWidth="0"
@@ -258,6 +247,9 @@ class ProjectsPage extends Component {
               aria-label="next project"
             >
               <svg
+                ref={el => {
+                  this.nextButtonSvg = el;
+                }}
                 stroke="currentColor"
                 fill="currentColor"
                 strokeWidth="0"
@@ -375,13 +367,18 @@ class ProjectsPage extends Component {
             padding-bottom: 100%;
           }
 
-          .clip img {
+          .container {
             position: absolute;
-            top: -1px;
+            top: 0;
             left: 0;
-            width: auto;
-            height: calc(100% + 2px);
-            transition: 1s;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+          }
+
+          img {
+            width: 100%;
+            height: auto;
           }
 
           .arrows {
