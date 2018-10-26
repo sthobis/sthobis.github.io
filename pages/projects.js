@@ -88,7 +88,7 @@ class ProjectsPage extends Component {
     anime({
       targets: this.projectThumbnail,
       translateX: ["-101%", 0],
-      easing: "easeOutCubic",
+      easing: "easeInOutQuad",
       duration: 1400
     });
   };
@@ -102,7 +102,7 @@ class ProjectsPage extends Component {
     anime({
       targets: this.projectThumbnailImage,
       translateY,
-      easing: "easeOutCubic",
+      easing: "easeInOutQuad",
       duration: 1400
     });
   };
@@ -114,7 +114,7 @@ class ProjectsPage extends Component {
         targets: this.projectDescription,
         translateX: ["100%", 0],
         opacity: [0, 1],
-        easing: "easeOutCubic",
+        easing: "easeInOutQuad",
         delay: 200,
         duration: 1200
       });
@@ -123,9 +123,9 @@ class ProjectsPage extends Component {
         targets: this.projectDescription,
         translateY: ["-100%", 0],
         opacity: [0, 1],
-        easing: "easeOutCubic",
-        delay: 200,
-        duration: 800
+        easing: "easeInOutQuad",
+        delay: 300,
+        duration: 900
       });
     }
   };
