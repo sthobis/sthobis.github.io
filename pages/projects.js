@@ -57,11 +57,7 @@ class ProjectsPage extends Component {
             ? prevState.currentProjectIndex - 1
             : projects.length - 1
       }),
-      () => {
-        anime.remove(this.projectDescription);
-        this.animateProjectDescription();
-        this.animateProjectThumbnailImage();
-      }
+      this.reAnimateProject
     );
   };
 
@@ -76,12 +72,15 @@ class ProjectsPage extends Component {
             ? prevState.currentProjectIndex + 1
             : 0
       }),
-      () => {
-        anime.remove(this.projectDescription);
-        this.animateProjectDescription();
-        this.animateProjectThumbnailImage();
-      }
+      this.reAnimateProject
     );
+  };
+
+  reAnimateProject = () => {
+    anime.remove(this.projectDescription);
+    anime.remove(this.projectThumbnailImage);
+    this.animateProjectDescription();
+    this.animateProjectThumbnailImage();
   };
 
   animateProjectThumbnail = () => {
@@ -95,10 +94,7 @@ class ProjectsPage extends Component {
 
   animateProjectThumbnailImage = () => {
     const { prevProjectIndex, currentProjectIndex } = this.state;
-    const translateY = [
-      `-${(prevProjectIndex / projects.length) * 100}%`,
-      `-${(currentProjectIndex / projects.length) * 100}%`
-    ];
+    const translateY = `${(currentProjectIndex / projects.length) * -100}%`;
     anime({
       targets: this.projectThumbnailImage,
       translateY,
@@ -268,6 +264,7 @@ class ProjectsPage extends Component {
             align-self: center;
             display: flex;
             align-items: stretch;
+            margin: 30px 0;
           }
 
           section {
@@ -313,6 +310,8 @@ class ProjectsPage extends Component {
           .links {
             display: flex;
             flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
             margin: 10px 0;
           }
 
@@ -431,7 +430,7 @@ class ProjectsPage extends Component {
 
           @media (max-width: 1400px) and (orientation: landscape) {
             h1 {
-              font-size: 5rem;
+              font-size: 5vw;
             }
           }
 
@@ -446,10 +445,6 @@ class ProjectsPage extends Component {
           }
 
           @media (max-width: 1024px) {
-            #projects {
-              margin: 30px 0;
-            }
-
             .clip {
               width: 100%;
             }
@@ -524,6 +519,10 @@ class ProjectsPage extends Component {
               margin-bottom: 30px;
             }
 
+            h1 {
+              font-size: 4rem;
+            }
+
             .thumbnail {
               width: 100%;
               justify-content: center;
@@ -537,10 +536,6 @@ class ProjectsPage extends Component {
           }
 
           @media (max-width: 767px) and (orientation: portrait) {
-            h1 {
-              font-size: 4rem;
-            }
-
             .clip {
               width: 100%;
             }
