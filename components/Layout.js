@@ -103,14 +103,17 @@ class Layout extends Component {
           <Header pathname={pathname} />
           <main>{children}</main>
           <footer>
-            <a href="https://github.com/sthobis/sthobis.github.io/tree/dev">
+            <a
+              className="source"
+              href="https://github.com/sthobis/sthobis.github.io/tree/dev"
+            >
               {`< view source >`}
             </a>
+            <div className="socmed">
+              <a href="https://twitter.com/iBoht">twitter</a>
+              <a href="https://instagram.com/thobiisnaga">instagram</a>
+            </div>
           </footer>
-        </div>
-        <div className="socmed">
-          <a href="https://twitter.com/iBoht">twitter</a>
-          <a href="https://instagram.com/thobiisnaga">instagram</a>
         </div>
         <style jsx>{`
           .layout {
@@ -152,33 +155,30 @@ class Layout extends Component {
           main {
             flex: auto;
             display: flex;
-            margin: 0 75px;
+            margin: 0 10px;
           }
 
           footer {
             display: flex;
+            justify-content: space-between;
             align-items: flex-end;
           }
 
-          footer a {
+          .source {
             color: #fff;
             text-decoration: none;
             margin: 0 0 0 10px;
           }
 
           .socmed {
-            position: absolute;
-            z-index: 3;
-            right: 50px;
-            bottom: 50px;
-            text-align: right;
-            writing-mode: vertical-lr;
+            display: flex;
+            margin: 0 0 0 10px;
           }
 
           .socmed a {
             color: #fff;
             text-decoration: none;
-            margin: 10px 0;
+            margin: 0 10px;
           }
 
           @media (orientation: portrait) {
@@ -191,31 +191,34 @@ class Layout extends Component {
             .content {
               padding: 30px;
             }
-
-            .socmed {
-              right: 30px;
-              bottom: 30px;
-            }
           }
 
           @media (max-width: 767px) and (orientation: landscape) {
-            main {
-              margin: 0 55px;
-            }
           }
 
           @media (max-width: 767px) and (orientation: portrait) {
             .content {
               align-items: center;
-              min-height: calc(100vh - 60px);
+              min-height: 100vh;
+            }
+
+            header {
+              flex: none;
             }
 
             main {
-              margin: 0 10px;
+              flex: auto;
+              min-height: 100%;
             }
 
             footer {
-              display: none;
+              flex: none;
+              flex-direction: column;
+              align-items: center;
+            }
+
+            .source {
+              margin: 0 0 10px 0;
             }
 
             .socmed {
@@ -226,21 +229,13 @@ class Layout extends Component {
               text-align: center;
               display: flex;
               justify-content: center;
-              margin: 0 0 30px 0;
+              margin: 0;
             }
 
             .socmed a {
               display: block;
               height: 30px;
-              margin: 0;
             }
-
-            .socmed a + a {
-              margin-left: 20px;
-            }
-          }
-
-          @media (max-width: 767px) and (orientation: landscape) {
           }
         `}</style>
         <style global jsx>{`
