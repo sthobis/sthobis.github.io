@@ -2,43 +2,40 @@ import anime from "animejs";
 import React, { Component } from "react";
 
 class IndexPage extends Component {
-  constructor(props) {
-    super(props);
-    this.subtitles = [];
-  }
-
   componentDidMount() {
     this.timeout = setTimeout(this.animateText, 800);
   }
 
   componentWillUnmount() {
-    anime.remove([this.title, this.subtitle, this.description]);
+    anime.remove([this.title, this.firstName, this.lastName, this.description]);
     clearTimeout(this.timeout);
   }
 
   animateText = () => {
-    anime({
-      targets: this.title,
-      translateX: ["70%", 0],
-      opacity: 1,
-      duration: 800,
-      easing: "easeOutCirc"
-    })
-      .finished.then(() => {
-        return anime({
-          targets: this.subtitles,
-          translateY: (el, i) => (i === 0 ? ["100%", 0] : ["-100%", 0]),
-          opacity: 1,
-          duration: 600
-        }).finished;
-      })
-      .then(() => {
-        return anime({
-          targets: this.description,
-          rotateX: [110, 0],
-          opacity: 1,
-          duration: 600
-        }).finished;
+    this.title &&
+      anime({
+        targets: this.title,
+        translateX: ["70%", 0],
+        opacity: 1,
+        duration: 800,
+        easing: "easeOutCirc"
+      });
+    this.firstName &&
+      this.lastName &&
+      anime({
+        targets: [this.firstName, this.lastName],
+        translateY: (el, i) => (i === 0 ? ["100%", 0] : ["-100%", 0]),
+        opacity: 1,
+        delay: 800,
+        duration: 600
+      });
+    this.description &&
+      anime({
+        targets: this.description,
+        rotateX: [110, 0],
+        opacity: 1,
+        delay: 1500,
+        duration: 600
       });
   };
 
@@ -53,7 +50,7 @@ class IndexPage extends Component {
           >
             <span
               ref={el => {
-                this.subtitles.push(el);
+                this.firstName = el;
               }}
             >
               stefanus
@@ -61,7 +58,7 @@ class IndexPage extends Component {
             <span>thobi</span>
             <span
               ref={el => {
-                this.subtitles.push(el);
+                this.lastName = el;
               }}
             >
               sinaga
