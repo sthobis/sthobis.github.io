@@ -54,5 +54,16 @@ export const projects = [
     tags: ["express", "mongodb", "react", "next.js", "ui design"],
     description:
       "Igfluencer is an online platform to find top instagram influencers in Indonesia."
+  },
+  {
+    name: "sleddit",
+    links: [
+      {
+        href: "https://sleddit.now.sh",
+        text: "Live site"
+      }
+    ],
+    tags: ["react", "next.js", "ui design"],
+    description: "Sleddit is a Slack-styled Reddit viewer."
   }
 ];
