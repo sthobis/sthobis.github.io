@@ -7,8 +7,8 @@
     "url": "https://github.com/sthobis/sthobis.github.io"
   },
   "dependencies": {
-    "animejs": "^2.2.0",
-    "next": "^7.0.2",
+    "animejs": "^3.0.1",
+    "next": "^8.1.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
@@ -23,6 +23,6 @@
     "deploy": "yarn export && node deploy.js"
   },
   "devDependencies": {
-    "gh-pages": "^1.1.0"
+    "gh-pages": "^2.0.1"
   }
 }
