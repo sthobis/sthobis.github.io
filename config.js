@@ -16,7 +16,7 @@ export const projects = [
     links: [
       {
         href: "https://molondry.com",
-        text: "Live site"
+        text: "Website"
       },
       {
         href: "https://itunes.apple.com/us/app/molondry/id1413776306?ls=1&mt=8",
@@ -36,7 +36,7 @@ export const projects = [
     links: [
       {
         href: "https://duajarimanis.com",
-        text: "Live site"
+        text: "Website"
       }
     ],
     tags: ["express", "mongodb", "react", "next.js", "ui design"],
@@ -48,7 +48,7 @@ export const projects = [
     links: [
       {
         href: "https://igfluencer.id",
-        text: "Live site"
+        text: "Website"
       }
     ],
     tags: ["express", "mongodb", "react", "next.js", "ui design"],
@@ -60,10 +60,21 @@ export const projects = [
     links: [
       {
         href: "https://sleddit.now.sh",
-        text: "Live site"
+        text: "Website"
       }
     ],
     tags: ["react", "next.js", "ui design"],
     description: "Sleddit is a Slack-styled Reddit viewer."
+  },
+  {
+    name: "kawaii-avatar",
+    links: [
+      {
+        href: "https://kawaii-avatar.now.sh",
+        text: "Website"
+      }
+    ],
+    tags: ["serverless", "react", "next.js", "ui design"],
+    description: "Kawaii Avatar is a deterministic user avatar generator."
   }
 ];
