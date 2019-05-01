@@ -26,7 +26,7 @@ var projects = [{
   name: "molondry",
   links: [{
     href: "https://molondry.com",
-    text: "Live site"
+    text: "Website"
   }, {
     href: "https://itunes.apple.com/us/app/molondry/id1413776306?ls=1&mt=8",
     text: "AppStore"
@@ -40,7 +40,7 @@ var projects = [{
   name: "duajarimanis",
   links: [{
     href: "https://duajarimanis.com",
-    text: "Live site"
+    text: "Website"
   }],
   tags: ["express", "mongodb", "react", "next.js", "ui design"],
   description: "Duajarimanis is a static wedding site generator with a built-in WYSIWYG editor."
@@ -48,7 +48,7 @@ var projects = [{
   name: "igfluencer",
   links: [{
     href: "https://igfluencer.id",
-    text: "Live site"
+    text: "Website"
   }],
   tags: ["express", "mongodb", "react", "next.js", "ui design"],
   description: "Igfluencer is an online platform to find top instagram influencers in Indonesia."
@@ -56,10 +56,18 @@ var projects = [{
   name: "sleddit",
   links: [{
     href: "https://sleddit.now.sh",
-    text: "Live site"
+    text: "Website"
   }],
   tags: ["react", "next.js", "ui design"],
   description: "Sleddit is a Slack-styled Reddit viewer."
+}, {
+  name: "kawaii-avatar",
+  links: [{
+    href: "https://kawaii-avatar.now.sh",
+    text: "Website"
+  }],
+  tags: ["serverless", "react", "next.js", "ui design"],
+  description: "Kawaii Avatar is a deterministic user avatar generator."
 }];
 
 /***/ }),
@@ -308,12 +316,12 @@ process.umask = function() { return 0; };
 
 /***/ "./node_modules/react/index.js":
 /*!*******************************************************************************************!*\
-  !*** delegated ./node_modules/react/index.js from dll-reference dll_5d62d38be3592dca3a42 ***!
+  !*** delegated ./node_modules/react/index.js from dll-reference dll_0f247e9cceb355cd81a4 ***!
   \*******************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = (__webpack_require__(/*! dll-reference dll_5d62d38be3592dca3a42 */ "dll-reference dll_5d62d38be3592dca3a42"))("./node_modules/react/index.js");
+module.exports = (__webpack_require__(/*! dll-reference dll_0f247e9cceb355cd81a4 */ "dll-reference dll_0f247e9cceb355cd81a4"))("./node_modules/react/index.js");
 
 /***/ }),
 
@@ -1021,33 +1029,13 @@ module.exports = __webpack_require__(/*! ./dist/style */ "./node_modules/styled-
 /***/ }),
 
 /***/ "./node_modules/webpack/buildin/global.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
+/*!******************************************************************************************************!*\
+  !*** delegated ./node_modules/webpack/buildin/global.js from dll-reference dll_0f247e9cceb355cd81a4 ***!
+  \******************************************************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
+module.exports = (__webpack_require__(/*! dll-reference dll_0f247e9cceb355cd81a4 */ "dll-reference dll_0f247e9cceb355cd81a4"))("./node_modules/webpack/buildin/global.js");
 
 /***/ }),
 
@@ -1125,11 +1113,11 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -1149,7 +1137,7 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ProjectsPage).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleKeyDown", function (e) {
+    _defineProperty(_assertThisInitialized(_this), "handleKeyDown", function (e) {
       switch (e.which) {
         case _config__WEBPACK_IMPORTED_MODULE_3__["KEYS_CODE"].UP:
         case _config__WEBPACK_IMPORTED_MODULE_3__["KEYS_CODE"].LEFT:
@@ -1168,7 +1156,7 @@ function (_Component) {
       }
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "prevProject", function () {
+    _defineProperty(_assertThisInitialized(_this), "prevProject", function () {
       _this.animateArrowsButton(_config__WEBPACK_IMPORTED_MODULE_3__["ARROW_TYPE"].PREV);
 
       _this.prevButton.blur();
@@ -1181,7 +1169,7 @@ function (_Component) {
       }, _this.reAnimateProject);
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "nextProject", function () {
+    _defineProperty(_assertThisInitialized(_this), "nextProject", function () {
       _this.animateArrowsButton(_config__WEBPACK_IMPORTED_MODULE_3__["ARROW_TYPE"].NEXT);
 
       _this.nextButton.blur();
@@ -1194,7 +1182,7 @@ function (_Component) {
       }, _this.reAnimateProject);
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "reAnimateProject", function () {
+    _defineProperty(_assertThisInitialized(_this), "reAnimateProject", function () {
       animejs__WEBPACK_IMPORTED_MODULE_1___default.a.remove(_this.projectDescription);
       animejs__WEBPACK_IMPORTED_MODULE_1___default.a.remove(_this.projectThumbnailImage);
 
@@ -1203,7 +1191,7 @@ function (_Component) {
       _this.animateProjectThumbnailImage();
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "animateProjectThumbnail", function () {
+    _defineProperty(_assertThisInitialized(_this), "animateProjectThumbnail", function () {
       animejs__WEBPACK_IMPORTED_MODULE_1___default()({
         targets: _this.projectThumbnail,
         translateX: ["-101%", 0],
@@ -1212,7 +1200,7 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "animateProjectThumbnailImage", function () {
+    _defineProperty(_assertThisInitialized(_this), "animateProjectThumbnailImage", function () {
       var _this$state = _this.state,
           prevProjectIndex = _this$state.prevProjectIndex,
           currentProjectIndex = _this$state.currentProjectIndex;
@@ -1225,7 +1213,7 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "animateProjectDescription", function () {
+    _defineProperty(_assertThisInitialized(_this), "animateProjectDescription", function () {
       var isLandscape = window.innerWidth > window.innerHeight;
 
       if (isLandscape) {
@@ -1249,7 +1237,7 @@ function (_Component) {
       }
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "animateNavigation", function () {
+    _defineProperty(_assertThisInitialized(_this), "animateNavigation", function () {
       animejs__WEBPACK_IMPORTED_MODULE_1___default()({
         targets: _this.navigation,
         opacity: [0, 1],
@@ -1259,7 +1247,7 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "animateArrowsButton", function (type) {
+    _defineProperty(_assertThisInitialized(_this), "animateArrowsButton", function (type) {
       var _ref = type === _config__WEBPACK_IMPORTED_MODULE_3__["ARROW_TYPE"].PREV ? [_this.prevButtonSvg, [0, -6]] : [_this.nextButtonSvg, [0, 6]],
           _ref2 = _slicedToArray(_ref, 2),
           targets = _ref2[0],
@@ -1564,14 +1552,14 @@ return { page: module.exports.default }});
 
 /***/ }),
 
-/***/ "dll-reference dll_5d62d38be3592dca3a42":
+/***/ "dll-reference dll_0f247e9cceb355cd81a4":
 /*!*******************************************!*\
-  !*** external "dll_5d62d38be3592dca3a42" ***!
+  !*** external "dll_0f247e9cceb355cd81a4" ***!
   \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = dll_5d62d38be3592dca3a42;
+module.exports = dll_0f247e9cceb355cd81a4;
 
 /***/ })
 
