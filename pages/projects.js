@@ -1,113 +1,136 @@
 import anime from "animejs";
-import React, { Component } from "react";
+import React, { useReducer, useEffect, useLayoutEffect, useRef } from "react";
 import { ARROW_TYPE, KEYS_CODE, projects } from "../config";
 
-class ProjectsPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      prevProjectIndex: 0,
-      currentProjectIndex: 0
-    };
-  }
+const initialState = {
+  prevProjectIndex: 0,
+  currentProjectIndex: 0
+};
 
-  componentDidMount() {
-    this.timeout = setTimeout(() => {
-      this.animateProjectDescription();
-      this.animateProjectThumbnail();
-      this.animateNavigation();
+const ACTION = {
+  NEXT: "next",
+  PREV: "prev"
+}
+
+const reducer = (state, action) => {
+  switch(action.type) {
+    case ACTION.NEXT:
+      return {
+        prevProjectIndex: state.currentProjectIndex,
+        currentProjectIndex: state.currentProjectIndex !== projects.length - 1
+          ? state.currentProjectIndex + 1
+          : 0
+      }
+    case ACTION.PREV:
+      return {
+        prevProjectIndex: state.currentProjectIndex,
+        currentProjectIndex: state.currentProjectIndex !== 0
+          ? state.currentProjectIndex - 1
+          : projects.length - 1
+      }
+    default:
+      throw new Error(`Undefined action: '${action.type}'`);
+  }
+}
+
+const ProjectsPage = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const projectDescriptionRef = useRef();
+  const projectThumbnailRef = useRef();
+  const projectThumbnailImageRef = useRef();
+  const navigationRef = useRef();
+  const prevButtonRef = useRef();
+  const prevButtonSvgRef = useRef();
+  const nextButtonRef = useRef();
+  const nextButtonSvgRef = useRef();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      animateProjectDescription();
+      animateProjectThumbnail();
+      animateNavigation();
     }, 800);
-    document.addEventListener("keydown", this.handleKeyDown);
-  }
+    document.addEventListener("keydown", handleKeyDown);
 
-  componentWillUnmount() {
-    anime.remove([
-      this.projectDescription,
-      this.projectThumbnail,
-      this.navigation,
-      this.navigationButtons
-    ]);
-    clearTimeout(this.timeout);
-    document.removeEventListener("keydown", this.handleKeyDown);
-  }
+    return () => {
+      anime.remove([
+        projectDescriptionRef.current,
+        projectThumbnailRef.current,
+        navigationRef.current
+      ]);
+      clearTimeout(timeout);
+      document.removeEventListener("keydown", handleKeyDown);
+    }
+  }, []);
 
-  handleKeyDown = e => {
+  const firstRender = useRef(true);
+  useLayoutEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+    } else {
+      reAnimateProject();
+    }
+  }, [state]);
+
+  const handleKeyDown = e => {
     switch (e.which) {
       case KEYS_CODE.UP:
       case KEYS_CODE.LEFT:
-        this.prevProject();
+        prevProject();
         break;
       case KEYS_CODE.DOWN:
       case KEYS_CODE.RIGHT:
-        this.nextProject();
+        nextProject();
         break;
       default:
         break;
     }
   };
 
-  prevProject = () => {
-    this.animateArrowsButton(ARROW_TYPE.PREV);
-    this.prevButton.blur();
-    this.setState(
-      prevState => ({
-        prevProjectIndex: prevState.currentProjectIndex,
-        currentProjectIndex:
-          prevState.currentProjectIndex !== 0
-            ? prevState.currentProjectIndex - 1
-            : projects.length - 1
-      }),
-      this.reAnimateProject
-    );
+  const prevProject = () => {
+    animateArrowsButton(ARROW_TYPE.PREV);
+    prevButtonRef.current.blur();
+    dispatch({ type: ACTION.PREV });
   };
 
-  nextProject = () => {
-    this.animateArrowsButton(ARROW_TYPE.NEXT);
-    this.nextButton.blur();
-    this.setState(
-      prevState => ({
-        prevProjectIndex: prevState.currentProjectIndex,
-        currentProjectIndex:
-          prevState.currentProjectIndex !== projects.length - 1
-            ? prevState.currentProjectIndex + 1
-            : 0
-      }),
-      this.reAnimateProject
-    );
+  const nextProject = () => {
+    animateArrowsButton(ARROW_TYPE.NEXT);
+    nextButtonRef.current.blur();
+    dispatch({ type: ACTION.NEXT });
   };
 
-  reAnimateProject = () => {
-    anime.remove(this.projectDescription);
-    anime.remove(this.projectThumbnailImage);
-    this.animateProjectDescription();
-    this.animateProjectThumbnailImage();
+  const reAnimateProject = () => {
+    anime.remove(projectDescriptionRef.current);
+    anime.remove(projectThumbnailImageRef.current);
+    animateProjectDescription();
+    animateProjectThumbnailImage();
   };
 
-  animateProjectThumbnail = () => {
+  const animateProjectThumbnail = () => {
     anime({
-      targets: this.projectThumbnail,
+      targets: projectThumbnailRef.current,
       translateX: ["-101%", 0],
       easing: "easeInOutQuad",
       duration: 1400
     });
   };
 
-  animateProjectThumbnailImage = () => {
-    const { prevProjectIndex, currentProjectIndex } = this.state;
-    const translateY = `${(currentProjectIndex / projects.length) * -100}%`;
+  const animateProjectThumbnailImage = () => {
+    const translateY = `${(state.currentProjectIndex / projects.length) * -100}%`;
     anime({
-      targets: this.projectThumbnailImage,
+      targets: projectThumbnailImageRef.current,
       translateY,
       easing: "easeInOutQuad",
       duration: 1400
     });
   };
 
-  animateProjectDescription = () => {
+  const animateProjectDescription = () => {
     const isLandscape = window.innerWidth > window.innerHeight;
     if (isLandscape) {
       anime({
-        targets: this.projectDescription,
+        targets: projectDescriptionRef.current,
         translateX: ["100%", 0],
         opacity: [0, 1],
         easing: "easeInOutQuad",
@@ -116,7 +139,7 @@ class ProjectsPage extends Component {
       });
     } else {
       anime({
-        targets: this.projectDescription,
+        targets: projectDescriptionRef.current,
         translateY: ["-100%", 0],
         opacity: [0, 1],
         easing: "easeInOutQuad",
@@ -126,9 +149,9 @@ class ProjectsPage extends Component {
     }
   };
 
-  animateNavigation = () => {
+  const animateNavigation = () => {
     anime({
-      targets: this.navigation,
+      targets: navigationRef.current,
       opacity: [0, 1],
       easing: "easeOutCubic",
       delay: 400,
@@ -136,11 +159,11 @@ class ProjectsPage extends Component {
     });
   };
 
-  animateArrowsButton = type => {
+  const animateArrowsButton = type => {
     const [targets, translateX] =
       type === ARROW_TYPE.PREV
-        ? [this.prevButtonSvg, [0, -6]]
-        : [this.nextButtonSvg, [0, 6]];
+        ? [prevButtonSvgRef.current, [0, -6]]
+        : [nextButtonSvgRef.current, [0, 6]];
     anime.remove(targets);
     let translate = anime({
       targets,
@@ -152,398 +175,381 @@ class ProjectsPage extends Component {
     translate.play();
   };
 
-  render() {
-    const { currentProjectIndex } = this.state;
-    return (
-      <div id="projects">
-        <section>
-          <div className="text">
-            <div
-              ref={el => {
-                this.projectDescription = el;
-              }}
-              className="wrap"
-            >
-              <h1>{projects[currentProjectIndex].name}</h1>
-              <p>{projects[currentProjectIndex].description}</p>
-              <div className="links">
-                {projects[currentProjectIndex].links.map((link, i) => (
-                  <a
-                    key={i}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {link.text}
-                  </a>
-                ))}
-              </div>
-              <div className="tags">
-                {projects[currentProjectIndex].tags.map(tag => (
-                  <span key={tag}>{tag}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="thumbnail">
-            <div
-              ref={el => {
-                this.projectThumbnail = el;
-              }}
-              className="clip"
-            >
-              <div
-                ref={el => {
-                  this.projectThumbnailImage = el;
-                }}
-                className="container"
-              >
-                {projects.map((project, i) => (
-                  <img
-                    key={project.name}
-                    src={`/static/images/${project.name}.png`}
-                    alt={project.name}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+  return (
+    <div id="projects">
+      <section>
+        <div className="text">
           <div
-            ref={el => {
-              this.navigation = el;
-            }}
-            className="arrows"
+            ref={projectDescriptionRef}
+            className="wrap"
           >
-            <button
-              ref={el => {
-                this.prevButton = el;
-              }}
-              type="button"
-              onClick={this.prevProject}
-              aria-label="previous project"
-            >
-              <svg
-                ref={el => {
-                  this.prevButtonSvg = el;
-                }}
-                stroke="currentColor"
-                fill="currentColor"
-                strokeWidth="0"
-                viewBox="0 0 256 512"
-                height="1em"
-                width="1em"
-              >
-                <path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z" />
-              </svg>
-            </button>
-            <button
-              ref={el => (this.nextButton = el)}
-              type="button"
-              onClick={this.nextProject}
-              aria-label="next project"
-            >
-              <svg
-                ref={el => {
-                  this.nextButtonSvg = el;
-                }}
-                stroke="currentColor"
-                fill="currentColor"
-                strokeWidth="0"
-                viewBox="0 0 256 512"
-                height="1em"
-                width="1em"
-              >
-                <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z" />
-              </svg>
-            </button>
+            <h1>{projects[state.currentProjectIndex].name}</h1>
+            <p>{projects[state.currentProjectIndex].description}</p>
+            <div className="links">
+              {projects[state.currentProjectIndex].links.map((link, i) => (
+                <a
+                  key={i}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {link.text}
+                </a>
+              ))}
+            </div>
+            <div className="tags">
+              {projects[state.currentProjectIndex].tags.map(tag => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
           </div>
-        </section>
-        <style jsx>{`
+        </div>
+        <div className="thumbnail">
+          <div
+            ref={projectThumbnailRef}
+            className="clip"
+          >
+            <div
+              ref={projectThumbnailImageRef}
+              className="container"
+            >
+              {projects.map((project, i) => (
+                <img
+                  key={project.name}
+                  src={`/static/images/${project.name}.png`}
+                  alt={project.name}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div
+          ref={navigationRef}
+          className="arrows"
+        >
+          <button
+            ref={prevButtonRef}
+            type="button"
+            onClick={prevProject}
+            aria-label="previous project"
+          >
+            <svg
+              ref={prevButtonSvgRef}
+              stroke="currentColor"
+              fill="currentColor"
+              strokeWidth="0"
+              viewBox="0 0 256 512"
+              height="1em"
+              width="1em"
+            >
+              <path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z" />
+            </svg>
+          </button>
+          <button
+            ref={nextButtonRef}
+            type="button"
+            onClick={nextProject}
+            aria-label="next project"
+          >
+            <svg
+              ref={nextButtonSvgRef}
+              stroke="currentColor"
+              fill="currentColor"
+              strokeWidth="0"
+              viewBox="0 0 256 512"
+              height="1em"
+              width="1em"
+            >
+              <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z" />
+            </svg>
+          </button>
+        </div>
+      </section>
+      <style jsx>{`
+        #projects {
+          width: 100%;
+          align-self: center;
+          display: flex;
+          align-items: stretch;
+          margin: 30px 0;
+        }
+
+        section {
+          position: relative;
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: stretch;
+        }
+
+        .text {
+          width: calc(50% - 50px);
+          display: flex;
+          align-items: center;
+          margin: 0 50px 0 0;
+          overflow: hidden;
+        }
+
+        .wrap {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-end;
+          width: 100%;
+          margin: 0 0 50px 0;
+          text-align: right;
+          opacity: 0;
+        }
+
+        h1 {
+          margin: 0;
+          font-size: 8rem;
+          font-family: Raleway, sans-serif;
+          text-transform: capitalize;
+          line-height: 1;
+        }
+
+        p {
+          margin: 20px 0 0 0;
+        }
+
+        .links {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          align-items: center;
+          margin: 10px 0;
+        }
+
+        .links a {
+          margin: 0 0 10px 20px;
+          color: #fff;
+          text-decoration: none;
+          border-bottom: 1px dashed #f5359e;
+        }
+
+        .links a:first-child {
+          margin-left: 0;
+        }
+
+        .tags {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          align-items: center;
+          font-size: 1.6rem;
+        }
+
+        .tags span {
+          line-height: 1;
+          margin: 0 0 5px 10px;
+          font-style: italic;
+        }
+
+        .tags span:first-child {
+          margin-left: 0;
+        }
+
+        .thumbnail {
+          width: 50%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          overflow: hidden;
+        }
+
+        .clip {
+          position: relative;
+          width: 80%;
+          overflow: hidden;
+          transform: translateX(-101%);
+        }
+
+        .clip::before {
+          content: "";
+          display: block;
+          padding-bottom: 100%;
+        }
+
+        .container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+
+        .arrows {
+          position: absolute;
+          right: calc(50% + 50px);
+          bottom: 0;
+          display: flex;
+          opacity: 0;
+        }
+
+        .arrows button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 2px;
+          background-color: rgba(255, 255, 255, 0.15);
+          cursor: pointer;
+          color: #fff;
+          font-size: 1.8rem;
+          outline: none;
+          transition: 0.3s;
+        }
+
+        .arrows button:hover,
+        .arrows button:focus {
+          background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .arrows button:hover path,
+        .arrows button:focus path {
+          fill: rgba(255, 255, 255, 1);
+        }
+
+        .arrows button path {
+          fill: rgba(255, 255, 255, 0.7);
+          transition: 0.3s;
+        }
+
+        .arrows button:last-child {
+          margin-left: 10px;
+        }
+
+        @media (max-width: 1400px) {
+          .clip {
+            width: 75%;
+          }
+        }
+
+        @media (max-width: 1400px) and (orientation: landscape) {
+          h1 {
+            font-size: 5vw;
+          }
+        }
+
+        @media (max-width: 1400px) and (orientation: portrait) {
           #projects {
-            width: 100%;
-            align-self: center;
-            display: flex;
-            align-items: stretch;
             margin: 30px 0;
           }
 
-          section {
-            position: relative;
+          h1 {
+            font-size: 5rem;
+          }
+        }
+
+        @media (max-width: 1024px) {
+          .clip {
             width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: stretch;
+          }
+        }
+
+        @media (max-width: 1024px) and (orientation: landscape) {
+          .clip {
+            width: 100%;
+          }
+        }
+
+        @media (max-width: 1024px) and (orientation: portrait) {
+          section {
+            flex-direction: column;
+            align-items: center;
           }
 
           .text {
-            width: calc(50% - 50px);
-            display: flex;
-            align-items: center;
-            margin: 0 50px 0 0;
-            overflow: hidden;
+            width: 100%;
+            margin: 30px 0 0 0;
+            order: 2;
           }
 
           .wrap {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-end;
-            width: 100%;
-            margin: 0 0 50px 0;
-            text-align: right;
-            opacity: 0;
-          }
-
-          h1 {
-            margin: 0;
-            font-size: 8rem;
-            font-family: Raleway, sans-serif;
-            text-transform: capitalize;
-            line-height: 1;
-          }
-
-          p {
-            margin: 20px 0 0 0;
-          }
-
-          .links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-end;
             align-items: center;
-            margin: 10px 0;
+            text-align: center;
+            margin-bottom: 30px;
+          }
+
+          .links,
+          .tags {
+            justify-content: center;
           }
 
           .links a {
-            margin: 0 0 10px 20px;
-            color: #fff;
-            text-decoration: none;
-            border-bottom: 1px dashed #f5359e;
-          }
-
-          .links a:first-child {
-            margin-left: 0;
-          }
-
-          .tags {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            align-items: center;
-            font-size: 1.6rem;
+            margin-left: 10px;
+            margin-right: 10px;
           }
 
           .tags span {
-            line-height: 1;
-            margin: 0 0 5px 10px;
-            font-style: italic;
-          }
-
-          .tags span:first-child {
-            margin-left: 0;
+            margin-left: 5px;
+            margin-right: 5px;
           }
 
           .thumbnail {
-            width: 50%;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            overflow: hidden;
-          }
-
-          .clip {
-            position: relative;
-            width: 80%;
-            overflow: hidden;
-            transform: translateX(-101%);
-          }
-
-          .clip::before {
-            content: "";
-            display: block;
-            padding-bottom: 100%;
-          }
-
-          .container {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-          }
-
-          img {
-            width: 100%;
-            height: auto;
+            justify-content: center;
+            order: 1;
           }
 
           .arrows {
-            position: absolute;
-            right: calc(50% + 50px);
-            bottom: 0;
-            display: flex;
-            opacity: 0;
+            position: static;
+            order: 3;
           }
+        }
 
-          .arrows button {
-            display: flex;
-            justify-content: center;
+        @media (max-width: 767px) {
+          section {
+            flex-direction: column;
             align-items: center;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 2px;
-            background-color: rgba(255, 255, 255, 0.15);
-            cursor: pointer;
-            color: #fff;
-            font-size: 1.8rem;
-            outline: none;
-            transition: 0.3s;
           }
 
-          .arrows button:hover,
-          .arrows button:focus {
-            background-color: rgba(255, 255, 255, 0.3);
+          .text {
+            width: 100%;
+            margin: 30px 0 0 0;
+            order: 2;
           }
 
-          .arrows button:hover path,
-          .arrows button:focus path {
-            fill: rgba(255, 255, 255, 1);
+          .wrap {
+            align-items: center;
+            text-align: center;
+            margin-bottom: 30px;
           }
 
-          .arrows button path {
-            fill: rgba(255, 255, 255, 0.7);
-            transition: 0.3s;
+          h1 {
+            font-size: 4rem;
           }
 
-          .arrows button:last-child {
-            margin-left: 10px;
+          .thumbnail {
+            width: 100%;
+            justify-content: center;
+            order: 1;
           }
 
-          @media (max-width: 1400px) {
-            .clip {
-              width: 75%;
-            }
+          .arrows {
+            position: static;
+            order: 3;
           }
+        }
 
-          @media (max-width: 1400px) and (orientation: landscape) {
-            h1 {
-              font-size: 5vw;
-            }
+        @media (max-width: 767px) and (orientation: portrait) {
+          .clip {
+            width: 100%;
           }
-
-          @media (max-width: 1400px) and (orientation: portrait) {
-            #projects {
-              margin: 30px 0;
-            }
-
-            h1 {
-              font-size: 5rem;
-            }
-          }
-
-          @media (max-width: 1024px) {
-            .clip {
-              width: 100%;
-            }
-          }
-
-          @media (max-width: 1024px) and (orientation: landscape) {
-            .clip {
-              width: 100%;
-            }
-          }
-
-          @media (max-width: 1024px) and (orientation: portrait) {
-            section {
-              flex-direction: column;
-              align-items: center;
-            }
-
-            .text {
-              width: 100%;
-              margin: 30px 0 0 0;
-              order: 2;
-            }
-
-            .wrap {
-              align-items: center;
-              text-align: center;
-              margin-bottom: 30px;
-            }
-
-            .links,
-            .tags {
-              justify-content: center;
-            }
-
-            .links a {
-              margin-left: 10px;
-              margin-right: 10px;
-            }
-
-            .tags span {
-              margin-left: 5px;
-              margin-right: 5px;
-            }
-
-            .thumbnail {
-              width: 100%;
-              justify-content: center;
-              order: 1;
-            }
-
-            .arrows {
-              position: static;
-              order: 3;
-            }
-          }
-
-          @media (max-width: 767px) {
-            section {
-              flex-direction: column;
-              align-items: center;
-            }
-
-            .text {
-              width: 100%;
-              margin: 30px 0 0 0;
-              order: 2;
-            }
-
-            .wrap {
-              align-items: center;
-              text-align: center;
-              margin-bottom: 30px;
-            }
-
-            h1 {
-              font-size: 4rem;
-            }
-
-            .thumbnail {
-              width: 100%;
-              justify-content: center;
-              order: 1;
-            }
-
-            .arrows {
-              position: static;
-              order: 3;
-            }
-          }
-
-          @media (max-width: 767px) and (orientation: portrait) {
-            .clip {
-              width: 100%;
-            }
-          }
-        `}</style>
-      </div>
-    );
-  }
+        }
+      `}</style>
+    </div>
+  );
 }
 
 export default ProjectsPage;

@@ -15,7 +15,7 @@ export const projects = [
     name: "molondry",
     links: [
       {
-        href: "https://molondry.com",
+        href: "#",
         text: "Website"
       },
       {
@@ -29,13 +29,13 @@ export const projects = [
     ],
     tags: ["express", "mongodb", "react", "react-native", "expo", "ui design"],
     description:
-      "Molondry is web / mobile (integrated) app for ordering laundry service."
+      "Molondry (inactive) is web / mobile (integrated) app for ordering laundry service."
   },
   {
     name: "duajarimanis",
     links: [
       {
-        href: "https://duajarimanis.com",
+        href: "https://djm.sthobis.com",
         text: "Website"
       }
     ],
@@ -47,7 +47,7 @@ export const projects = [
     name: "igfluencer",
     links: [
       {
-        href: "https://igfluencer.id",
+        href: "https://igf.sthobis.com",
         text: "Website"
       }
     ],
@@ -61,6 +61,10 @@ export const projects = [
       {
         href: "https://sleddit.now.sh",
         text: "Website"
+      },
+      {
+        href: "https://github.com/sthobis/sleddit",
+        text: "Source"
       }
     ],
     tags: ["react", "next.js", "ui design"],
@@ -72,6 +76,10 @@ export const projects = [
       {
         href: "https://kawaii-avatar.now.sh",
         text: "Website"
+      },
+      {
+        href: "https://github.com/sthobis/kawaii-avatar",
+        text: "Source"
       }
     ],
     tags: ["serverless", "react", "next.js", "ui design"],
