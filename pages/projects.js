@@ -4,34 +4,36 @@ import { ARROW_TYPE, KEYS_CODE, projects } from "../config";
 
 const initialState = {
   prevProjectIndex: 0,
-  currentProjectIndex: 0
+  currentProjectIndex: 0,
 };
 
 const ACTION = {
   NEXT: "next",
-  PREV: "prev"
-}
+  PREV: "prev",
+};
 
 const reducer = (state, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case ACTION.NEXT:
       return {
         prevProjectIndex: state.currentProjectIndex,
-        currentProjectIndex: state.currentProjectIndex !== projects.length - 1
-          ? state.currentProjectIndex + 1
-          : 0
-      }
+        currentProjectIndex:
+          state.currentProjectIndex !== projects.length - 1
+            ? state.currentProjectIndex + 1
+            : 0,
+      };
     case ACTION.PREV:
       return {
         prevProjectIndex: state.currentProjectIndex,
-        currentProjectIndex: state.currentProjectIndex !== 0
-          ? state.currentProjectIndex - 1
-          : projects.length - 1
-      }
+        currentProjectIndex:
+          state.currentProjectIndex !== 0
+            ? state.currentProjectIndex - 1
+            : projects.length - 1,
+      };
     default:
       throw new Error(`Undefined action: '${action.type}'`);
   }
-}
+};
 
 const ProjectsPage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -57,15 +59,15 @@ const ProjectsPage = () => {
       anime.remove([
         projectDescriptionRef.current,
         projectThumbnailRef.current,
-        navigationRef.current
+        navigationRef.current,
       ]);
       clearTimeout(timeout);
       document.removeEventListener("keydown", handleKeyDown);
-    }
+    };
   }, []);
 
   const firstRender = useRef(true);
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
     } else {
@@ -73,7 +75,7 @@ const ProjectsPage = () => {
     }
   }, [state]);
 
-  const handleKeyDown = e => {
+  const handleKeyDown = (e) => {
     switch (e.which) {
       case KEYS_CODE.UP:
       case KEYS_CODE.LEFT:
@@ -112,17 +114,19 @@ const ProjectsPage = () => {
       targets: projectThumbnailRef.current,
       translateX: ["-101%", 0],
       easing: "easeInOutQuad",
-      duration: 1400
+      duration: 1400,
     });
   };
 
   const animateProjectThumbnailImage = () => {
-    const translateY = `${(state.currentProjectIndex / projects.length) * -100}%`;
+    const translateY = `${
+      (state.currentProjectIndex / projects.length) * -100
+    }%`;
     anime({
       targets: projectThumbnailImageRef.current,
       translateY,
       easing: "easeInOutQuad",
-      duration: 1400
+      duration: 1400,
     });
   };
 
@@ -135,7 +139,7 @@ const ProjectsPage = () => {
         opacity: [0, 1],
         easing: "easeInOutQuad",
         delay: 200,
-        duration: 1200
+        duration: 1200,
       });
     } else {
       anime({
@@ -144,7 +148,7 @@ const ProjectsPage = () => {
         opacity: [0, 1],
         easing: "easeInOutQuad",
         delay: 300,
-        duration: 900
+        duration: 900,
       });
     }
   };
@@ -155,11 +159,11 @@ const ProjectsPage = () => {
       opacity: [0, 1],
       easing: "easeOutCubic",
       delay: 400,
-      duration: 1000
+      duration: 1000,
     });
   };
 
-  const animateArrowsButton = type => {
+  const animateArrowsButton = (type) => {
     const [targets, translateX] =
       type === ARROW_TYPE.PREV
         ? [prevButtonSvgRef.current, [0, -6]]
@@ -169,7 +173,7 @@ const ProjectsPage = () => {
       targets,
       translateX,
       easing: "easeOutSine",
-      duration: 800
+      duration: 800,
     });
     translate.reverse();
     translate.play();
@@ -179,10 +183,7 @@ const ProjectsPage = () => {
     <div id="projects">
       <section>
         <div className="text">
-          <div
-            ref={projectDescriptionRef}
-            className="wrap"
-          >
+          <div ref={projectDescriptionRef} className="wrap">
             <h1>{projects[state.currentProjectIndex].name}</h1>
             <p>{projects[state.currentProjectIndex].description}</p>
             <div className="links">
@@ -198,35 +199,26 @@ const ProjectsPage = () => {
               ))}
             </div>
             <div className="tags">
-              {projects[state.currentProjectIndex].tags.map(tag => (
+              {projects[state.currentProjectIndex].tags.map((tag) => (
                 <span key={tag}>{tag}</span>
               ))}
             </div>
           </div>
         </div>
         <div className="thumbnail">
-          <div
-            ref={projectThumbnailRef}
-            className="clip"
-          >
-            <div
-              ref={projectThumbnailImageRef}
-              className="container"
-            >
+          <div ref={projectThumbnailRef} className="clip">
+            <div ref={projectThumbnailImageRef} className="container">
               {projects.map((project, i) => (
                 <img
                   key={project.name}
-                  src={`/static/images/${project.name}.png`}
+                  src={`/images/${project.name}.png`}
                   alt={project.name}
                 />
               ))}
             </div>
           </div>
         </div>
-        <div
-          ref={navigationRef}
-          className="arrows"
-        >
+        <div ref={navigationRef} className="arrows">
           <button
             ref={prevButtonRef}
             type="button"
@@ -362,7 +354,7 @@ const ProjectsPage = () => {
 
         .clip {
           position: relative;
-          width: 80%;
+          width: 75%;
           overflow: hidden;
           transform: translateX(-101%);
         }
@@ -550,6 +542,6 @@ const ProjectsPage = () => {
       `}</style>
     </div>
   );
-}
+};
 
 export default ProjectsPage;

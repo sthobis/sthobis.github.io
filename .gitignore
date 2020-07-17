@@ -10,3 +10,4 @@ build
 # Log files
 .DS_Store
 yarn-error.log
+.vercel

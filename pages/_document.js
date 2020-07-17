@@ -1,4 +1,4 @@
-import Document, { Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 // const gTagScript = `window.dataLayer = window.dataLayer || [];
 // function gtag(){dataLayer.push(arguments);}
@@ -13,7 +13,7 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <html lang="en">
+      <Html lang="en">
         <Head>
           <meta name="description" content="Stefanus Thobi Sinaga" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -30,17 +30,13 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Raleway:800|Ropa+Sans:400,400i"
             rel="stylesheet"
           />
-          <link
-            rel="icon"
-            type="image/png"
-            href="/static/images/icon-192x192.png"
-          />
+          <link rel="icon" type="image/png" href="/images/icon-192x192.png" />
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

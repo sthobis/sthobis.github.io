@@ -15,7 +15,7 @@ const IndexPage = () => {
         titleRef.current,
         firstNameRef.current,
         lastNameRef.current,
-        descriptionRef.current
+        descriptionRef.current,
       ]);
       clearTimeout(timeout);
     };
@@ -28,7 +28,7 @@ const IndexPage = () => {
         translateX: ["70%", 0],
         opacity: 1,
         duration: 800,
-        easing: "easeOutCirc"
+        easing: "easeOutCirc",
       });
     firstNameRef.current &&
       lastNameRef.current &&
@@ -37,7 +37,7 @@ const IndexPage = () => {
         translateY: (el, i) => (i === 0 ? ["100%", 0] : ["-100%", 0]),
         opacity: 1,
         delay: 800,
-        duration: 600
+        duration: 600,
       });
     descriptionRef.current &&
       anime({
@@ -45,7 +45,7 @@ const IndexPage = () => {
         rotateX: [110, 0],
         opacity: 1,
         delay: 1500,
-        duration: 600
+        duration: 600,
       });
   };
 
@@ -59,9 +59,6 @@ const IndexPage = () => {
         </h1>
         <h2 ref={descriptionRef}>
           javascript <span>web / mobile</span> developer
-          <br />
-          available for{" "}
-          <a href="mailto:s.thobi.sinaga@gmail.com?Subject=Hi%20Thobi">hire</a>
         </h2>
       </div>
       <style jsx>{`
@@ -128,7 +125,7 @@ const IndexPage = () => {
         }
 
         h2 {
-          margin: 30px 0 0 0;
+          margin: 50px 0 0 0;
           font-size: 3rem;
           font-weight: 400;
           text-align: right;

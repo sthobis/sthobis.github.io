@@ -7,7 +7,7 @@ const BRANCH = "master";
 // set .nojekyll files on build folder
 // https://github.com/zeit/next.js/wiki/Deploying-a-Next.js-app-into-GitHub-Pages
 console.log("Starting deployment to github pages...");
-fs.copyFile("./.nojekyll", `./${BUILD_DIR}/.nojekyll`, function(err) {
+fs.copyFile("./.nojekyll", `./${BUILD_DIR}/.nojekyll`, function (err) {
   if (err) {
     console.log(`Failed to copy '.nojekyll' into ${BUILD_DIR}`);
     console.error(err);
@@ -15,15 +15,15 @@ fs.copyFile("./.nojekyll", `./${BUILD_DIR}/.nojekyll`, function(err) {
     console.log(`Copied '.nojekyll' into ${BUILD_DIR}`);
 
     // deploy to github
-    console.log("Publishing...");
+    console.log("\nPublishing...");
     ghpages.publish(
       BUILD_DIR,
       {
         repo: "https://github.com/sthobis/sthobis.github.io.git",
         branch: BRANCH,
-        dotfiles: true
+        dotfiles: true,
       },
-      function(err) {
+      function (err) {
         if (err) {
           console.log("Publish failed.");
           console.error(err);
