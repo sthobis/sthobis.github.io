@@ -61,7 +61,7 @@ const ProjectsPage = () => {
         new Promise((resolve) => {
           const img = new Image();
           img.onload = resolve;
-          img.src = `/images/${project.name}.png`;
+          img.src = `/${project.name}.png`;
         })
       );
     });
@@ -222,7 +222,7 @@ const ProjectsPage = () => {
               {projects.map((project, i) => (
                 <img
                   key={project.name}
-                  src={`/images/${project.name}.png`}
+                  src={`/${project.name}.png`}
                   alt={project.name}
                 />
               ))}

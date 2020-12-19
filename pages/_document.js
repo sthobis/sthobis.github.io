@@ -29,7 +29,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Raleway:800|Ropa+Sans:400,400i"
             rel="stylesheet"
           />
-          <link rel="icon" type="image/png" href="/images/icon-192x192.png" />
+          <link rel="icon" type="image/png" href="/icon-192x192.png" />
         </Head>
         <body>
           <Main />
