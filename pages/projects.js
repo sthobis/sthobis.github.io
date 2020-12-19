@@ -1,6 +1,5 @@
 import anime from "animejs";
 import React, { useReducer, useEffect, useRef } from "react";
-import Image from "next/image";
 import { ARROW_TYPE, KEYS_CODE, projects } from "../config";
 
 const initialState = {
@@ -55,6 +54,17 @@ const ProjectsPage = () => {
       animateNavigation();
     }, 800);
     document.addEventListener("keydown", handleKeyDown);
+
+    let loadImages = [];
+    projects.forEach((project) => {
+      loadImages.push(
+        new Promise((resolve) => {
+          const img = new Image();
+          img.onload = resolve;
+          img.src = `/images/${project.name}.png`;
+        })
+      );
+    });
 
     return () => {
       anime.remove([
@@ -210,14 +220,11 @@ const ProjectsPage = () => {
           <div ref={projectThumbnailRef} className="clip">
             <div ref={projectThumbnailImageRef} className="container">
               {projects.map((project, i) => (
-                <div className="image" key={project.name}>
-                  <Image
-                    src={`/images/${project.name}.png`}
-                    alt={project.name}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
+                <img
+                  key={project.name}
+                  src={`/images/${project.name}.png`}
+                  alt={project.name}
+                />
               ))}
             </div>
           </div>
@@ -378,14 +385,9 @@ const ProjectsPage = () => {
           flex-direction: column;
         }
 
-        .image {
-          position: relative;
-        }
-
-        .image::before {
-          content: "";
-          display: block;
-          padding-bottom: 100%;
+        img {
+          width: 100%;
+          height: auto;
         }
 
         .arrows {

@@ -16,7 +16,6 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta name="description" content="Stefanus Thobi Sinaga" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta property="og:url" content="https://sthobis.github.io" />
           <meta property="og:site_name" content="Stefanus Thobi Sinaga" />
           <meta property="og:title" content="Stefanus Thobi Sinaga" />
