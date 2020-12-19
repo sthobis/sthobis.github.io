@@ -1,5 +1,6 @@
 import anime from "animejs";
-import React, { useReducer, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useReducer, useEffect, useRef } from "react";
+import Image from "next/image";
 import { ARROW_TYPE, KEYS_CODE, projects } from "../config";
 
 const initialState = {
@@ -209,11 +210,14 @@ const ProjectsPage = () => {
           <div ref={projectThumbnailRef} className="clip">
             <div ref={projectThumbnailImageRef} className="container">
               {projects.map((project, i) => (
-                <img
-                  key={project.name}
-                  src={`/images/${project.name}.png`}
-                  alt={project.name}
-                />
+                <div className="image" key={project.name}>
+                  <Image
+                    src={`/images/${project.name}.png`}
+                    alt={project.name}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -374,9 +378,14 @@ const ProjectsPage = () => {
           flex-direction: column;
         }
 
-        img {
-          width: 100%;
-          height: auto;
+        .image {
+          position: relative;
+        }
+
+        .image::before {
+          content: "";
+          display: block;
+          padding-bottom: 100%;
         }
 
         .arrows {

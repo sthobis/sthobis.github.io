@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "animejs": "^3.0.1",
-    "next": "^9.4.4",
+    "next": "^10.0.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
   },
@@ -17,8 +17,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "export": "yarn build && next export -o build",
     "start": "next start",
+    "export": "yarn build && next export -o build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "yarn export && node deploy.js"
   },
